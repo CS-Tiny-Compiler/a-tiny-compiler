@@ -3,7 +3,7 @@
 ### Example
 - Regex: `a(a|b)b`
 ```mermaid
-flowchart TD
+flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
   q0 --> |a| q1(("q1")):::normal
   q1 --> |a| q2(("q2")):::normal
