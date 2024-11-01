@@ -52,3 +52,22 @@ flowchart LR
   linkStyle 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 stroke:#333,stroke-width:2px,fill:none;
 
 ```
+
+### Delimiters
+```mermaid
+flowchart LR
+  start(((Start))):::startNode --> q0(("q0")):::normal
+  q0 --> |"{"| q1((("q1"))):::finalState
+  q0 --> |"}"| q1
+  q0 --> |";"| q1
+  q0 --> |"."| q1
+  q0 --> |","| q1
+
+  classDef startNode fill:none,stroke:none;
+  classDef normal stroke:#000,stroke-width:2px;
+  classDef finalState stroke:#000,stroke-width:3px;
+
+  linkStyle 0 stroke-width:2px;
+  linkStyle 1 stroke:#333,stroke-width:2px,fill:none;
+
+```
