@@ -58,10 +58,10 @@ flowchart LR
 flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
   q0 --> |"{"| q1((("q1"))):::finalState
-  q0 --> |"}"| q1
-  q0 --> |";"| q1
-  q0 --> |"."| q1
-  q0 --> |","| q1
+  q0 --> |"}"| q2((("q2"))):::finalState
+  q0 --> |";"| q3((("q3"))):::finalState
+  q0 --> |"."| q4((("q4"))):::finalState
+  q0 --> |","| q5((("q5"))):::finalState
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
