@@ -52,3 +52,43 @@ flowchart LR
   linkStyle 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 stroke:#333,stroke-width:2px,fill:none;
 
 ```
+
+### Arithmetic_Operators
+
+- Regex: `\+|-|\*|\/`
+
+<!-- I am using these HTML character codes (e.g. #43;) since directly using '+' or '-' or '*' gives syntax errors with the mermaid syntax -->
+
+```mermaid
+flowchart LR
+  start(((Start))):::startNode --> q0(("q0")):::normal
+  q0 --> |#43;| q1((("q1"))):::finalState
+  q0 --> |#45;| q2((("q2"))):::finalState
+  q0 --> |#42;| q3((("q3"))):::finalState
+  q0 --> |#47;| q4((("q4"))):::finalState
+
+  classDef startNode fill:none,stroke:none;
+  classDef normal stroke:#000,stroke-width:2px;
+  classDef finalState stroke:#000,stroke-width:3px;
+
+  linkStyle 0 stroke-width:2px;
+  linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
+```
+
+### Assignment_Operator
+
+- Regex: `:=`
+
+```mermaid
+flowchart LR
+  start(((Start))):::startNode --> q0(("q0")):::normal
+  q0 --> |:| q1(("q1")):::normal
+  q1 --> |=| q2((("q2"))):::finalState
+
+  classDef startNode fill:none,stroke:none;
+  classDef normal stroke:#000,stroke-width:2px;
+  classDef finalState stroke:#000,stroke-width:3px;
+
+  linkStyle 0 stroke-width:2px;
+  linkStyle 1,2 stroke:#333,stroke-width:2px,fill:none;
+```
