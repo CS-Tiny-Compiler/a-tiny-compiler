@@ -4,3 +4,4 @@
 - Reserved_Keywords -> `int | float | string | read | write | repeat | until | if | elseif | else | then | return | endl | end | main`
 - Arithmetic_Operators -> `\+|-|\*|\/`
 - Assignment_Operator -> `:=`
+- Delimiters -> `{|}|;|.|,`
