@@ -5,3 +5,5 @@
 - Arithmetic_Operators -> `\+|-|\*|\/`
 - Assignment_Operator -> `:=`
 - Delimiters -> `{|}|;|.|,`
+- Condition_Operators -> `< | > | = | <>`
+- Boolean_Operators -> `&& | \|\|`
