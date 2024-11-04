@@ -53,3 +53,15 @@ G:\college\2021-2022\First Term\Compilers\Compliers\This Year\Labs\Lab 3\[2020-2
 G:\college\2021-2022\First Term\Compilers\Compliers\This Year\Labs\Lab 3\[2020-2021] JASON_Compiler_Template\[2020-2021] JASON_Compiler_Template\[2017-2018] JASON_Compiler_Template\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.CoreCompileInputs.cache
 G:\college\2021-2022\First Term\Compilers\Compliers\This Year\Labs\Lab 3\[2020-2021] JASON_Compiler_Template\[2020-2021] JASON_Compiler_Template\[2017-2018] JASON_Compiler_Template\JASON_Compiler\obj\Debug\JASON_Compiler.exe
 G:\college\2021-2022\First Term\Compilers\Compliers\This Year\Labs\Lab 3\[2020-2021] JASON_Compiler_Template\[2020-2021] JASON_Compiler_Template\[2017-2018] JASON_Compiler_Template\JASON_Compiler\obj\Debug\JASON_Compiler.pdb
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\bin\Debug\JASON_Compiler.exe.config
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\bin\Debug\JASON_Compiler.exe
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\bin\Debug\JASON_Compiler.pdb
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.AssemblyReference.cache
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.SuggestedBindingRedirects.cache
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.Form1.resources
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.Form2.resources
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.Properties.Resources.resources
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.GenerateResource.cache
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.CoreCompileInputs.cache
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.exe
+D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.pdb
