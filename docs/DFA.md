@@ -21,29 +21,36 @@ flowchart LR
 ```
 
 ###   Number
-- Regex : `[+-]?[0-9]+(\.[0-9]+)?`
+- Regex : `[+|-]?[0-9]+(\.[0-9]+)?`
 - Digit : `[0-9]+`
-- Other : `[^ 0-9+-\.]`
+- Other : `~[0-9]`
+- Any   :  `.`
 ```mermaid
 flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
   
-  q0 --> |"+,-"| q1(("q1")):::normal
+  q0 --> |"'+','-'"| q1(("q1")):::normal
   q0 --> |Digit| q2((("q2"))):::finalState
-  q0 --> |Other| trap((("Trap"))):::trap
-  
+  q0 --> |"~['+','-',Digit]"| trap((("Trap"))):::trap
+
   q1 --> |Digit| q2
+   
   q1 --> |Other| trap
-  
-  q2 --> |Digit| q2
+
   q2 --> |"."| q3(("q3")):::normal
-  q2 --> |Other| trap
-  
+  q2 --> |"~['.',Digit]"| trap
+  q2 --> |Digit| q2
+
   q3 --> |Digit| q4((("q4"))):::finalState
   q3 --> |Other| trap
-  
+    
   q4 --> |Digit| q4
   q4 --> |Other| trap
+
+  trap --> |Any| trap
+  
+
+
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
@@ -51,26 +58,27 @@ flowchart LR
   classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3,4,5,6,7,8,9,10,11,12 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle 1,2,3,4,5,6,7,8,9,10,11,12,13 stroke:#333,stroke-width:2px,fill:none;
 
 ```
 
 
 ###  String
-- Regex: ` ^"[^"]*"$ `
+- Regex: ` "(~")*"`
+- Any: `.`
 ```mermaid
 flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
 
   q0 --> |``| q1(("q1")):::normal
 
-  q1 --> |"A-Z a-z 0-9 + -"| q1
+  q1 --> |"~[``]"| q1
   q1 --> |``| q2((("q2"))):::finalState
   
 
-  q2 --> |"[A-Z] ,[a-z],[0-9],+,-,``"| q3(("trap")):::trapState  
+  q2 --> |"Any"| q3(("trap")):::trapState  
 
-  q3 --> |"[A-Z],[a-z],[0-9],+,-,``"| q3  
+  q3 --> |"Any"| q3  
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
