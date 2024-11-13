@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 public enum Token_Class
 {
-    Begin, Call, Declare, End, Do, Else, EndIf, EndUntil, EndWhile, If, Integer,
-    Parameters, Procedure, Program, Read, Real, Set, Then, Until, While, Write,
-    Dot, Semicolon, Comma, LParanthesis, RParanthesis, EqualOp, LessThanOp,
-    GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, DivideOp,
-    Idenifier, Constant
+    Main, Int, Float, String, 
+    Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
+    Dot, Semicolon, Comma, LParanthesis, RParanthesis, LCurlyBrace, RCurlyBrace,
+    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, 
+    DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }
 namespace JASON_Compiler
 {
@@ -30,6 +30,7 @@ namespace JASON_Compiler
 
         public Scanner()
         {
+            // TODO: Update ReservedWords to Match Tokens
             ReservedWords.Add("IF", Token_Class.If);
             ReservedWords.Add("BEGIN", Token_Class.Begin);
             ReservedWords.Add("CALL", Token_Class.Call);
@@ -52,6 +53,7 @@ namespace JASON_Compiler
             ReservedWords.Add("WHILE", Token_Class.While);
             ReservedWords.Add("WRITE", Token_Class.Write);
 
+            // TODO: Update Operators to match tokens
             Operators.Add(".", Token_Class.Dot);
             Operators.Add(";", Token_Class.Semicolon);
             Operators.Add(",", Token_Class.Comma);
@@ -69,7 +71,7 @@ namespace JASON_Compiler
 
 
         }
-
+    // TODO: Update Scanning Function
     public void StartScanning(string SourceCode)
         {
             for(int i=0; i<SourceCode.Length;i++)
@@ -102,6 +104,8 @@ namespace JASON_Compiler
             
             JASON_Compiler.TokenStream = Tokens;
         }
+
+        // TODO: Implement FindTokenClass
         void FindTokenClass(string Lex)
         {
             Token_Class TC;
@@ -121,7 +125,7 @@ namespace JASON_Compiler
         }
 
     
-
+        // TODO: Implement Checker Functions
         bool isIdentifier(string lex)
         {
             bool isValid=true;
