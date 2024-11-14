@@ -169,7 +169,9 @@ flowchart LR
 
 ### Delimiters
 
-- Regex: `{|}|;|.|,` 
+- Regex: `{|}|;|\.|,` 
+- Other: `~[{};,\.]`
+- Any: `.`
 
 ```mermaid
 flowchart LR
@@ -179,10 +181,19 @@ flowchart LR
   q0 --> |";"| q3((("q3"))):::finalState
   q0 --> |"."| q4((("q4"))):::finalState
   q0 --> |","| q5((("q5"))):::finalState
+  q0 --> |Other| trap((("Trap"))):::trap
+  q1 --> |Any| trap((("Trap"))):::trap
+  q2 --> |Any| trap((("Trap"))):::trap
+  q3 --> |Any| trap((("Trap"))):::trap
+  q4 --> |Any| trap((("Trap"))):::trap
+  q5 --> |Any| trap((("Trap"))):::trap
+
+  trap --> |Any| trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
   
   linkStyle 0 stroke-width:2px;
   linkStyle 1 stroke:#333,stroke-width:2px,fill:none;
