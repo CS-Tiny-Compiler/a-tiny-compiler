@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JASON_Compiler.Properties {
+namespace Tiny_Compiler.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

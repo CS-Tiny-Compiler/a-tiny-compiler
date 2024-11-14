@@ -20,6 +20,80 @@ flowchart LR
   linkStyle 1,2,3 stroke:#333,stroke-width:2px,fill:none;
 ```
 
+###   Number
+- Regex : `[+|-]?[0-9]+(\.[0-9]+)?`
+- Digit : `[0-9]+`
+- Other : `~[0-9]`
+- Any   :  `.`
+```mermaid
+flowchart LR
+  start(((Start))):::startNode --> q0(("q0")):::normal
+  
+  q0 --> |"'+','-'"| q1(("q1")):::normal
+  q0 --> |Digit| q2((("q2"))):::finalState
+  q0 --> |"~['+','-',Digit]"| trap((("Trap"))):::trap
+
+  q1 --> |Digit| q2
+   
+  q1 --> |Other| trap
+
+  q2 --> |"."| q3(("q3")):::normal
+  q2 --> |"~['.',Digit]"| trap
+  q2 --> |Digit| q2
+
+  q3 --> |Digit| q4((("q4"))):::finalState
+  q3 --> |Other| trap
+    
+  q4 --> |Digit| q4
+  q4 --> |Other| trap
+
+  trap --> |Any| trap
+  
+
+
+
+  classDef startNode fill:none,stroke:none;
+  classDef normal stroke:#000,stroke-width:2px;
+  classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
+
+  linkStyle 0 stroke-width:2px;
+  linkStyle 1,2,3,4,5,6,7,8,9,10,11,12,13 stroke:#333,stroke-width:2px,fill:none;
+
+```
+
+
+###  String
+- Regex: ` "(~")*"`
+- Any: `.`
+```mermaid
+flowchart LR
+  start(((Start))):::startNode --> q0(("q0")):::normal
+
+  q0 --> |``| q1(("q1")):::normal
+
+  q1 --> |"~[``]"| q1
+  q1 --> |``| q2((("q2"))):::finalState
+  
+
+  q2 --> |"Any"| q3(("trap")):::trapState  
+
+  q3 --> |"Any"| q3  
+
+  classDef startNode fill:none,stroke:none;
+  classDef normal stroke:#000,stroke-width:2px;
+  classDef finalState stroke:#000,stroke-width:3px;
+  classDef trapState fill:red,stroke:#333,stroke-width:2px;
+
+  linkStyle 0 stroke-width:2px;
+  linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
+
+
+
+```
+
+
+
 ### Reserved_Keywords
 
 - Regex: `int | float | string | read | write | repeat | until | if | elseif | else | then | return | endl | end | main`
@@ -66,13 +140,15 @@ flowchart LR
   q0 --> |#45;| q2((("q2"))):::finalState
   q0 --> |#42;| q3((("q3"))):::finalState
   q0 --> |#47;| q4((("q4"))):::finalState
+  q0 --> |"~[#43;#45;#42;#47;]"| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
 ```
 
 ### Assignment_Operator
@@ -84,18 +160,23 @@ flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
   q0 --> |:| q1(("q1")):::normal
   q1 --> |=| q2((("q2"))):::finalState
+  q0 --> |"~:"| trap((("Trap"))):::trap
+  q1 --> |"~="| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
 ```
 
 ### Delimiters
 
-- Regex: `{|}|;|.|,` 
+- Regex: `{|}|;|\.|,` 
+- Other: `~[{};,\.]`
+- Any: `.`
 
 ```mermaid
 flowchart LR
@@ -105,10 +186,19 @@ flowchart LR
   q0 --> |";"| q3((("q3"))):::finalState
   q0 --> |"."| q4((("q4"))):::finalState
   q0 --> |","| q5((("q5"))):::finalState
+  q0 --> |Other| trap((("Trap"))):::trap
+  q1 --> |Any| trap((("Trap"))):::trap
+  q2 --> |Any| trap((("Trap"))):::trap
+  q3 --> |Any| trap((("Trap"))):::trap
+  q4 --> |Any| trap((("Trap"))):::trap
+  q5 --> |Any| trap((("Trap"))):::trap
+
+  trap --> |Any| trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
   
   linkStyle 0 stroke-width:2px;
   linkStyle 1 stroke:#333,stroke-width:2px,fill:none;
