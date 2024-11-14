@@ -9,7 +9,7 @@ public enum Token_Class
 {
     Main, Int, Float, String, 
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
-    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis,LRoundParanthesis, RRoundParanthesis, LCurlyBrace, RCurlyBrace,
+    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
     EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, 
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
@@ -51,6 +51,8 @@ namespace Tiny_Compiler
             Operators.Add(".", Token_Class.Dot);
             Operators.Add(";", Token_Class.Semicolon);
             Operators.Add(",", Token_Class.Comma);
+            Operators.Add("{", Token_Class.LCurlyParanthesis);
+            Operators.Add("}", Token_Class.RCurlyParanthesis);
             Operators.Add("(", Token_Class.LRoundParanthesis);
             Operators.Add(")", Token_Class.RRoundParanthesis);
             Operators.Add("=", Token_Class.EqualOp);
@@ -60,11 +62,10 @@ namespace Tiny_Compiler
             Operators.Add("+", Token_Class.PlusOp);
             Operators.Add("-", Token_Class.MinusOp);
             Operators.Add("*", Token_Class.MultiplyOp);
-            Operators.Add("/", Token_Class.DivideOp);
-            Operators.Add("{", Token_Class.LCurlyBrace);
-            Operators.Add("}", Token_Class.RCurlyBrace); 
+            Operators.Add("/", Token_Class.DivideOp); 
             Operators.Add("&&", Token_Class.AndOp); 
-            Operators.Add("||", Token_Class.OrOp); 
+            Operators.Add("||", Token_Class.OrOp);
+            Operators.Add(":=", Token_Class.AssignOp);
         }
 
         // TODO: Update Scanning Function
