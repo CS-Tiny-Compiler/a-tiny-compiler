@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 public enum Token_Class
 {
-    Begin, Call, Declare, End, Do, Else, EndIf, EndUntil, EndWhile, If, Integer,
-    Parameters, Procedure, Program, Read, Real, Set, Then, Until, While, Write,
-    Dot, Semicolon, Comma, LParanthesis, RParanthesis, EqualOp, LessThanOp,
-    GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, DivideOp,
-    Idenifier, Constant
-}
+    Main, Int, Float, String, 
+    Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
+    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis,LRoundParanthesis, RRoundParanthesis, LCurlyBrace, RCurlyBrace,
+    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, 
+    DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
+}// comment
 namespace JASON_Compiler
 {
     
@@ -30,46 +31,54 @@ namespace JASON_Compiler
 
         public Scanner()
         {
-            ReservedWords.Add("IF", Token_Class.If);
-            ReservedWords.Add("BEGIN", Token_Class.Begin);
-            ReservedWords.Add("CALL", Token_Class.Call);
-            ReservedWords.Add("DECLARE", Token_Class.Declare);
-            ReservedWords.Add("END", Token_Class.End);
-            ReservedWords.Add("DO", Token_Class.Do);
-            ReservedWords.Add("ELSE", Token_Class.Else);
-            ReservedWords.Add("ENDIF", Token_Class.EndIf);
-            ReservedWords.Add("ENDUNTIL", Token_Class.EndUntil);
-            ReservedWords.Add("ENDWHILE", Token_Class.EndWhile);
-            ReservedWords.Add("INTEGER", Token_Class.Integer);
-            ReservedWords.Add("PARAMETERS", Token_Class.Parameters);
-            ReservedWords.Add("PROCEDURE", Token_Class.Procedure);
-            ReservedWords.Add("PROGRAM", Token_Class.Program);
-            ReservedWords.Add("READ", Token_Class.Read);
-            ReservedWords.Add("REAL", Token_Class.Real);
-            ReservedWords.Add("SET", Token_Class.Set);
-            ReservedWords.Add("THEN", Token_Class.Then);
-            ReservedWords.Add("UNTIL", Token_Class.Until);
-            ReservedWords.Add("WHILE", Token_Class.While);
-            ReservedWords.Add("WRITE", Token_Class.Write);
+            // TODO: Update ReservedWords to Match Tokens
+           
+           
+            ReservedWords.Add("if", Token_Class.If);
+            ReservedWords.Add("int", Token_Class.Int);
+            ReservedWords.Add("float", Token_Class.Float);
+            ReservedWords.Add("string", Token_Class.String);
+            ReservedWords.Add("read", Token_Class.Read);
+            ReservedWords.Add("write", Token_Class.Write);
+            ReservedWords.Add("repeat", Token_Class.Repeat);
+            ReservedWords.Add("until ", Token_Class.Until);
+            ReservedWords.Add("elseif", Token_Class.ElseIf);
+            ReservedWords.Add("else", Token_Class.Else);
+            ReservedWords.Add("then", Token_Class.Then);
+            ReservedWords.Add("return", Token_Class.Return);
+            ReservedWords.Add("endl", Token_Class.Endl);
+            ReservedWords.Add("end", Token_Class.End);
+            ReservedWords.Add("main", Token_Class.Main);
+          
+           
+
+            // TODO: Update Operators to match tokens
+    
+
 
             Operators.Add(".", Token_Class.Dot);
             Operators.Add(";", Token_Class.Semicolon);
             Operators.Add(",", Token_Class.Comma);
-            Operators.Add("(", Token_Class.LParanthesis);
-            Operators.Add(")", Token_Class.RParanthesis);
+            Operators.Add("(", Token_Class.LRoundParanthesis);
+            Operators.Add(")", Token_Class.RRoundParanthesis);
             Operators.Add("=", Token_Class.EqualOp);
             Operators.Add("<", Token_Class.LessThanOp);
             Operators.Add(">", Token_Class.GreaterThanOp);
-            Operators.Add("!", Token_Class.NotEqualOp);
+            Operators.Add("<>", Token_Class.NotEqualOp);
             Operators.Add("+", Token_Class.PlusOp);
             Operators.Add("-", Token_Class.MinusOp);
             Operators.Add("*", Token_Class.MultiplyOp);
             Operators.Add("/", Token_Class.DivideOp);
+            Operators.Add("{", Token_Class.LCurlyBrace);
+            Operators.Add("}", Token_Class.RCurlyBrace); 
+            Operators.Add("&&", Token_Class.AndOp); 
+            Operators.Add("||", Token_Class.OrOp); 
+        
 
 
 
         }
-
+    // TODO: Update Scanning Function
     public void StartScanning(string SourceCode)
         {
             for(int i=0; i<SourceCode.Length;i++)
@@ -96,19 +105,50 @@ namespace JASON_Compiler
                 }
                 else
                 {
-                   
+                  
                 }
             }
             
             JASON_Compiler.TokenStream = Tokens;
         }
+
+        // TODO: Implement FindTokenClass
         void FindTokenClass(string Lex)
         {
             Token_Class TC;
             Token Tok = new Token();
             Tok.lex = Lex;
             //Is it a reserved word?
-            
+          if(isKeyWord(Lex)) 
+          {
+               Tok.token_type=ReservedWords[Lex];
+               Tokens.Add(Tok);
+          }
+          else if(isConstant(Lex)) 
+          {
+               Tok.token_type=Token_Class.Constant;
+               Tokens.Add(Tok);
+          }
+          else if(isOperator(Lex)) 
+          {
+               Tok.token_type=Operators[Lex];
+               Tokens.Add(Tok);
+          }
+          else if(isString(Lex)) 
+          {
+               Tok.token_type=Token_Class.Literal;
+               Tokens.Add(Tok);
+          }
+          else if(isIdentifier(Lex)) 
+          {
+               Tok.token_type=Token_Class.Idenifier;
+               Tokens.Add(Tok);
+          }
+          else
+          {
+               Errors.Error_List.Add(Lex);
+          }
+           
 
             //Is it an identifier?
             
@@ -121,18 +161,66 @@ namespace JASON_Compiler
         }
 
     
+        // TODO: Implement Checker Functions
+         bool isOperator(string lex)
+        {
+            bool isValid = false;
+            // Check if the lex is a Operator or not.
+            if(Operators.ContainsKey(lex))
+            {
+                isValid = true;
+            }
 
+            return isValid;
+        } 
+         bool isKeyWord(string lex)
+        {
+            bool isValid = false;
+            // Check if the lex is a Operator or not.
+            if(ReservedWords.ContainsKey(lex))
+            {
+                isValid = true;
+            }
+
+            return isValid;
+        }
+         bool isString(string lex)
+        {
+            bool isValid = false; 
+            // Check if the lex is a String or not.
+           var regx = new Regex(@"""[^""]*""", RegexOptions.Compiled);
+            if(regx.IsMatch(lex))
+            {
+                isValid = true; 
+    
+            }
+
+            return isValid;
+        }
         bool isIdentifier(string lex)
         {
-            bool isValid=true;
+            bool isValid=false;
             // Check if the lex is an identifier or not.
+            var regx=new Regex(@"[A-Za-z][A-Za-z0-9]*",RegexOptions.Compiled);
+            if(regx.IsMatch(lex))
+            {
+                isValid = true; 
+    
+            }
             
             return isValid;
         }
         bool isConstant(string lex)
         {
-            bool isValid = true;
-            // Check if the lex is a constant (Number) or not.
+         // Check if the lex is a constant (Number) or not.
+
+            bool isValid = false; 
+            var regx=new Regex(@"[\+\-]?[0-9]+(\.[0-9]+)?",RegexOptions.Compiled);
+            if(regx.IsMatch(lex))
+            {
+                isValid = true; 
+    
+            }
 
             return isValid;
         }

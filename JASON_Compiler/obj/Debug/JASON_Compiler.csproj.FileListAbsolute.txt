@@ -65,3 +65,6 @@ D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Comp
 D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.CoreCompileInputs.cache
 D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.exe
 D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.pdb
+C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.AssemblyReference.cache
+C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.exe
+C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.pdb
