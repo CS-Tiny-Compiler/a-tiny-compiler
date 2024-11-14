@@ -192,13 +192,15 @@ flowchart LR
   q0 --> |#45;| q2((("q2"))):::finalState
   q0 --> |#42;| q3((("q3"))):::finalState
   q0 --> |#47;| q4((("q4"))):::finalState
+  q0 --> |"~[#43;#45;#42;#47;]"| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
 ```
 
 ### Assignment_Operator
@@ -210,13 +212,16 @@ flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
   q0 --> |:| q1(("q1")):::normal
   q1 --> |=| q2((("q2"))):::finalState
+  q0 --> |"~:"| trap((("Trap"))):::trap
+  q1 --> |"~="| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
 ```
 
 ### Delimiters
