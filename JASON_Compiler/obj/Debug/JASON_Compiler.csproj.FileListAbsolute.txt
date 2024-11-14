@@ -68,3 +68,14 @@ D:\Code_projects\Uni\Compilers\tiny-compiler\JASON_Compiler\obj\Debug\JASON_Comp
 C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.AssemblyReference.cache
 C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.exe
 C:\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.pdb
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.AssemblyReference.cache
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\Tiny_Compiler.Form1.resources
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\Tiny_Compiler.Form2.resources
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\Tiny_Compiler.Properties.Resources.resources
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.GenerateResource.cache
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\JASON_Compiler.csproj.CoreCompileInputs.cache
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\bin\Debug\Tiny_Compiler.exe.config
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\bin\Debug\Tiny_Compiler.exe
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\bin\Debug\Tiny_Compiler.pdb
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\Tiny_Compiler.exe
+F:\Ahmed\Education\University\Year-3-Term-1\Compiler Theory\Project\a-tiny-compiler\JASON_Compiler\obj\Debug\Tiny_Compiler.pdb

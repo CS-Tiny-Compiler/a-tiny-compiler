@@ -1,4 +1,4 @@
-﻿namespace JASON_Compiler
+﻿namespace Tiny_Compiler
 {
     partial class Form1
     {
@@ -102,7 +102,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(88, 15);
             this.label1.TabIndex = 4;
-            this.label1.Text = "JASON Code";
+            this.label1.Text = "Tiny Code";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
