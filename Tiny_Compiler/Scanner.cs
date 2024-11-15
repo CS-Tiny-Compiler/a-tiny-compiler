@@ -91,10 +91,15 @@ namespace Tiny_Compiler
                     FindTokenClass(CurrentLexeme);
                 }
                 // Number + MutliDot error case
-                else if (isDigit(CurrentChar))
-                {
-                    int numOfDecPoint = 0;
+                else if (isDigit(CurrentChar) || SignedNum(CurrentChar, i, SourceCode))
+                { 
+                    if (CurrentChar == '-' || CurrentChar == '+')
+                    {
+                        CurrentLexeme = CurrentChar.ToString();
+                        CurrentLexeme += SourceCode[++i];
+                    }
 
+                    int numOfDecPoint = 0;
                     while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
                     {
                         if (SourceCode[i + 1] == '.')
@@ -239,6 +244,10 @@ namespace Tiny_Compiler
         bool isDigit(char c)
         {
             return (c >= '0' && c <= '9');
+        }
+        bool SignedNum(char c, int i, string SourceCode)
+        {
+            return ((c == '-' && (i == 0 || !isDigit(SourceCode[i - 1])) || (c == '+' && (i == 0 || !isDigit(SourceCode[i - 1]))) && i + 1 < SourceCode.Length && isDigit(SourceCode[i + 1])));
         }
 
         // TODO: Implement Checker Functions
