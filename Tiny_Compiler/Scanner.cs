@@ -291,7 +291,7 @@ namespace Tiny_Compiler
         bool isConstant(string lex)
         {
             bool isValid = false;
-            var regx = new Regex(@"[\+\-]?[0-9]+(\.[0-9]+)?", RegexOptions.Compiled);
+            var regx = new Regex(@"^[\+\-]?[0-9]+(\.[0-9]+)?$", RegexOptions.Compiled);
 
             if (regx.IsMatch(lex))
             {
