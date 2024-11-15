@@ -7,10 +7,10 @@ using System.Text.RegularExpressions;
 
 public enum Token_Class
 {
-    Main, Int, Float, String, 
+    Main, Int, Float, String,
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
     Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
-    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, 
+    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp,
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
 
@@ -38,7 +38,7 @@ namespace Tiny_Compiler
             ReservedWords.Add("read", Token_Class.Read);
             ReservedWords.Add("write", Token_Class.Write);
             ReservedWords.Add("repeat", Token_Class.Repeat);
-            ReservedWords.Add("until ", Token_Class.Until);
+            ReservedWords.Add("until", Token_Class.Until);
             ReservedWords.Add("elseif", Token_Class.ElseIf);
             ReservedWords.Add("else", Token_Class.Else);
             ReservedWords.Add("then", Token_Class.Then);
@@ -62,8 +62,8 @@ namespace Tiny_Compiler
             Operators.Add("+", Token_Class.PlusOp);
             Operators.Add("-", Token_Class.MinusOp);
             Operators.Add("*", Token_Class.MultiplyOp);
-            Operators.Add("/", Token_Class.DivideOp); 
-            Operators.Add("&&", Token_Class.AndOp); 
+            Operators.Add("/", Token_Class.DivideOp);
+            Operators.Add("&&", Token_Class.AndOp);
             Operators.Add("||", Token_Class.OrOp);
             Operators.Add(":=", Token_Class.AssignOp);
         }
@@ -71,34 +71,123 @@ namespace Tiny_Compiler
         // TODO: Update Scanning Function
         public void StartScanning(string SourceCode)
         {
-            for(int i=0; i<SourceCode.Length;i++)
+            Errors.Error_List.Clear();   
+
+            for (int i = 0; i < SourceCode.Length; i++)
             {
-                int j = i;
                 char CurrentChar = SourceCode[i];
                 string CurrentLexeme = CurrentChar.ToString();
 
                 if (CurrentChar == ' ' || CurrentChar == '\r' || CurrentChar == '\n')
                     continue;
 
-                if (CurrentChar >= 'A' && CurrentChar <= 'z') //if you read a character
+                // Identifiers & Reserved keywords
+                if (isLetter(CurrentChar) || CurrentChar == '_')
                 {
-                   
+                    while (i + 1 < SourceCode.Length && (isLetter(SourceCode[i + 1]) || isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '_'))
+                    {
+                        CurrentLexeme += SourceCode[++i];
+                    }
+                    FindTokenClass(CurrentLexeme);
                 }
+                // Number + MutliDot error case
+                else if (isDigit(CurrentChar))
+                {
+                    int numOfDecPoint = 0;
 
-                else if(CurrentChar >= '0' && CurrentChar <= '9')
-                {
-                   
+                    while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
+                    {
+                        if (SourceCode[i + 1] == '.')
+                        {
+                            numOfDecPoint++;
+
+                            if (numOfDecPoint > 1)
+                            {
+                                // generate the rest of the error lexeme
+                                while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
+                                {
+                                    CurrentLexeme += SourceCode[++i];
+                                }
+
+                                Errors.Error_List.Add("More than one dot in number: " + CurrentLexeme);
+                                break;
+                            }
+                        }
+
+                        CurrentLexeme += SourceCode[++i];
+                    }
+
+                    if (numOfDecPoint < 2)
+                    {
+                        FindTokenClass(CurrentLexeme);
+                    }
+
                 }
-                else if(CurrentChar == '{')
+                // String Literals + Unclosed string error case
+                else if (CurrentChar == '\"')
                 {
-                   
+           
+                    while (i + 1 < SourceCode.Length && SourceCode[i+1] != '\"')
+                    {
+                        CurrentLexeme += SourceCode[++i];
+                    }
+
+                    if (i + 1 < SourceCode.Length && SourceCode[i + 1] == '\"')
+                    {
+                        CurrentLexeme += SourceCode[++i];
+                        FindTokenClass(CurrentLexeme);
+                    }
+                    else
+                    {
+                        Errors.Error_List.Add("Unclosed string literal: " + CurrentLexeme);
+                    }
+
                 }
+                // Block Comment + Unclosed comment error case
+                else if (SourceCode[i] == '/' && (i + 1 < SourceCode.Length && SourceCode[i + 1] == '*'))
+                {
+                    CurrentLexeme = "/*";
+                    i += 2;
+
+                    while (i + 1 < SourceCode.Length && !(SourceCode[i] == '*' && SourceCode[i + 1] == '/'))
+                    {
+                        CurrentLexeme += SourceCode[i];
+                        i++;
+                    }
+
+                    if (i + 1 < SourceCode.Length && SourceCode[i] == '*' && SourceCode[i + 1] == '/')
+                    {
+                        CurrentLexeme += "*/";
+                        i++;
+                    }
+                    else
+                    {
+                        CurrentLexeme += SourceCode[i];
+                        Errors.Error_List.Add("Unclosed comment: " + CurrentLexeme);
+                    }
+                }
+                // Operators
+                else if (isOperator(CurrentLexeme) || CurrentChar == '|' || CurrentChar == '&' || CurrentChar == ':')  // operator or incompelete operator
+                {
+                    if (i + 1 < SourceCode.Length && (CurrentChar == ':' || CurrentChar == '|' || CurrentChar == '&' || CurrentChar == '<'))
+                    {
+                        string comp_operator = CurrentChar + SourceCode[i + 1].ToString(); // generate complete operator
+                        if (isOperator(comp_operator))
+                        {
+                            CurrentLexeme = comp_operator;
+                            i++;
+                        }
+                    }
+
+                    FindTokenClass(CurrentLexeme);
+                }
+                // Error
                 else
                 {
-                  
+                    Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
                 }
             }
-            
+
             Tiny_Compiler.TokenStream = Tokens;
         }
 
@@ -109,97 +198,108 @@ namespace Tiny_Compiler
             Token Tok = new Token();
             Tok.lex = Lex;
 
-            if(isKeyWord(Lex)) 
+            Lex=Lex.ToLower();
+
+            if (isString(Lex))
             {
-                Tok.token_type=ReservedWords[Lex];
+                Tok.token_type = Token_Class.Literal;
                 Tokens.Add(Tok);
             }
-            //Is it an Integer? (which for some reason is called Constant)
-            else if (isConstant(Lex)) 
+            else if (isKeyWord(Lex))
             {
-                Tok.token_type=Token_Class.Constant;
+                Tok.token_type = ReservedWords[Lex];
                 Tokens.Add(Tok);
             }
-            else if(isOperator(Lex)) 
+            else if (isConstant(Lex))
             {
-                Tok.token_type=Operators[Lex];
+                Tok.token_type = Token_Class.Constant;
                 Tokens.Add(Tok);
             }
-            else if(isString(Lex)) 
+            else if (isOperator(Lex))
             {
-                Tok.token_type=Token_Class.Literal;
+                Tok.token_type = Operators[Lex];
                 Tokens.Add(Tok);
             }
-            else if (isIdentifier(Lex)) 
+            else if (isIdentifier(Lex))
             {
-                Tok.token_type=Token_Class.Idenifier;
+                Tok.token_type = Token_Class.Idenifier;
                 Tokens.Add(Tok);
             }
             else
             {
-                Errors.Error_List.Add(Lex);
+                Errors.Error_List.Add("Unrecognized token: " + Lex);
             }
         }
 
-    
+        // Helper Functions
+        bool isLetter(char c)
+        {
+            return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+        }
+        bool isDigit(char c)
+        {
+            return (c >= '0' && c <= '9');
+        }
+
         // TODO: Implement Checker Functions
         bool isOperator(string lex)
         {
             bool isValid = false;
-            if(Operators.ContainsKey(lex))
+
+            if (Operators.ContainsKey(lex))
             {
-            isValid = true;
+                isValid = true;
             }
 
             return isValid;
-        } 
-        
+        }
         bool isKeyWord(string lex)
         {
             bool isValid = false;
-            if(ReservedWords.ContainsKey(lex))
+
+            if (ReservedWords.ContainsKey(lex))
             {
                 isValid = true;
             }
 
             return isValid;
         }
-
         bool isString(string lex)
         {
-            bool isValid = false; 
-            var regx = new Regex(@"""[^""]*""", RegexOptions.Compiled);
-            if(regx.IsMatch(lex))
+            bool isValid = false;
+            var regx = new Regex("^\"[^\"]*\"$", RegexOptions.Compiled);
+
+            if (regx.IsMatch(lex))
             {
                 isValid = true;
             }
 
             return isValid;
         }
-
         bool isIdentifier(string lex)
         {
-            bool isValid=false;
-            var regx=new Regex(@"[A-Za-z][A-Za-z0-9]*",RegexOptions.Compiled);
-            if(regx.IsMatch(lex))
+            bool isValid = false;
+            var regx = new Regex(@"[_A-Za-z][_A-Za-z0-9]*", RegexOptions.Compiled);
+            
+            if (regx.IsMatch(lex))
             {
                 isValid = true;
             }
-            
+
             return isValid;
         }
-
         bool isConstant(string lex)
         {
-            // Check if the lex is a constant (Number) or not.
-            bool isValid = false; 
-            var regx=new Regex(@"[\+\-]?[0-9]+(\.[0-9]+)?",RegexOptions.Compiled);
-            if(regx.IsMatch(lex))
+            bool isValid = false;
+            var regx = new Regex(@"[\+\-]?[0-9]+(\.[0-9]+)?", RegexOptions.Compiled);
+
+            if (regx.IsMatch(lex))
             {
                 isValid = true;
             }
 
             return isValid;
         }
+
     }
 }
