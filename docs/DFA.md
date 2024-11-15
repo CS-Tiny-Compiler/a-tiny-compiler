@@ -226,8 +226,8 @@ flowchart LR
 
 ### Delimiters
 
-- Regex: `{|}|;|\.|,`
-- Other: `~[{};,\.]`
+- Regex: `{|}|;|\.|,|(|)`
+- Other: `~[{};,\(\)\.]`
 - Any: `.`
 
 ```mermaid
@@ -238,12 +238,16 @@ flowchart LR
   q0 --> |";"| q3((("q3"))):::finalState
   q0 --> |"."| q4((("q4"))):::finalState
   q0 --> |","| q5((("q5"))):::finalState
+  q0 --> |"("| q6((("q6"))):::finalState
+  q0 --> |")"| q7((("q7"))):::finalState
   q0 --> |Other| trap((("Trap"))):::trap
   q1 --> |Any| trap((("Trap"))):::trap
   q2 --> |Any| trap((("Trap"))):::trap
   q3 --> |Any| trap((("Trap"))):::trap
   q4 --> |Any| trap((("Trap"))):::trap
   q5 --> |Any| trap((("Trap"))):::trap
+  q6 --> |Any| trap((("Trap"))):::trap
+  q7 --> |Any| trap((("Trap"))):::trap
 
   trap --> |Any| trap
 
