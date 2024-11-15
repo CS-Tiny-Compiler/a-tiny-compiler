@@ -215,11 +215,14 @@ flowchart LR
   q0 --> |#62;| q2((("q2"))):::finalState
   q0 --> |#61;| q3((("q3"))):::finalState
   q1 --> |#62;| q4((("q4"))):::finalState
+  q0 --> |"~[#60;#62;#61;]"| trap((("Trap"))):::trap
+  q1 --> |"~#62;"| trap((("Trap"))):::trap
  
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
   linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
@@ -236,11 +239,15 @@ flowchart LR
   q1 --> |#38;| q3((("q3"))):::finalState
   q0 --> |#124;| q2(("q2")):::normal
   q2 --> |#124;| q4((("q4"))):::finalState
+  q0 --> |"~[#38;#124;]"| trap((("Trap"))):::trap
+  q1 --> |"~#38;"| trap((("Trap"))):::trap
+  q2 --> |"~#124;"| trap((("Trap"))):::trap
  
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
+  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
   linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
