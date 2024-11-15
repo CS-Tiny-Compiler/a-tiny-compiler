@@ -9,7 +9,7 @@ public enum Token_Class
 {
     Main, Int, Float, String,
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
-    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
+    Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
     EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp,
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
@@ -48,7 +48,6 @@ namespace Tiny_Compiler
             ReservedWords.Add("main", Token_Class.Main);
 
             // TODO: Update Operators to match tokens
-            Operators.Add(".", Token_Class.Dot);
             Operators.Add(";", Token_Class.Semicolon);
             Operators.Add(",", Token_Class.Comma);
             Operators.Add("{", Token_Class.LCurlyParanthesis);
@@ -91,22 +90,21 @@ namespace Tiny_Compiler
                     FindTokenClass(CurrentLexeme);
                 }
                 // Number + MutliDot error case
-                else if (isDigit(CurrentChar) || SignedNum(CurrentChar, i, SourceCode))
+                else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode))
                 { 
-                    if (CurrentChar == '-' || CurrentChar == '+')
+                    if (CurrentChar == '-' || CurrentChar == '+') // adding sign of number
                     {
-                        CurrentLexeme = CurrentChar.ToString();
                         CurrentLexeme += SourceCode[++i];
                     }
 
-                    int numOfDecPoint = 0;
+                    int decimalPointCount = 0;
                     while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
                     {
                         if (SourceCode[i + 1] == '.')
                         {
-                            numOfDecPoint++;
+                            decimalPointCount++;
 
-                            if (numOfDecPoint > 1)
+                            if (decimalPointCount > 1)
                             {
                                 // generate the rest of the error lexeme
                                 while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
@@ -122,7 +120,7 @@ namespace Tiny_Compiler
                         CurrentLexeme += SourceCode[++i];
                     }
 
-                    if (numOfDecPoint < 2)
+                    if (decimalPointCount < 2)
                     {
                         FindTokenClass(CurrentLexeme);
                     }
@@ -154,20 +152,20 @@ namespace Tiny_Compiler
                     CurrentLexeme = "/*";
                     i += 2;
 
-                    while (i + 1 < SourceCode.Length && !(SourceCode[i] == '*' && SourceCode[i + 1] == '/'))
+                    while (i < SourceCode.Length)
                     {
                         CurrentLexeme += SourceCode[i];
-                        i++;
-                    }
 
-                    if (i + 1 < SourceCode.Length && SourceCode[i] == '*' && SourceCode[i + 1] == '/')
-                    {
-                        CurrentLexeme += "*/";
+                        if (SourceCode[i] == '*' && i+1 < SourceCode.Length && SourceCode[i + 1] == '/')
+                        {
+                            CurrentLexeme += SourceCode[++i];
+                            break;
+                        }
+
                         i++;
                     }
-                    else
+                    if (!(CurrentLexeme[CurrentLexeme.Length - 2] == '*' && CurrentLexeme[CurrentLexeme.Length-1]=='/'))
                     {
-                        CurrentLexeme += SourceCode[i];
                         Errors.Error_List.Add("Unclosed comment: " + CurrentLexeme);
                     }
                 }
@@ -245,7 +243,7 @@ namespace Tiny_Compiler
         {
             return (c >= '0' && c <= '9');
         }
-        bool SignedNum(char c, int i, string SourceCode)
+        bool isSignedNumber(char c, int i, string SourceCode)
         {
             return ((c == '-' && (i == 0 || !isDigit(SourceCode[i - 1])) || (c == '+' && (i == 0 || !isDigit(SourceCode[i - 1]))) && i + 1 < SourceCode.Length && isDigit(SourceCode[i + 1])));
         }
@@ -288,7 +286,7 @@ namespace Tiny_Compiler
         bool isIdentifier(string lex)
         {
             bool isValid = false;
-            var regx = new Regex(@"[_A-Za-z][_A-Za-z0-9]*", RegexOptions.Compiled);
+            var regx = new Regex(@"^[A-Za-z][A-Za-z0-9]*", RegexOptions.Compiled);
             
             if (regx.IsMatch(lex))
             {
