@@ -8,6 +8,5 @@
 - Delimiters -> `{|}|;|.|,`
 - Condition_Operators -> `< | > | = | <>`
 - Boolean_Operators -> `&& | \|\|`
-- Identifiers -> `[A-Za-z][A-Za-z0-9]*`
-
+- Identifiers -> `[A-Z|a-z][A-Z|a-z|0-9]*`
 
