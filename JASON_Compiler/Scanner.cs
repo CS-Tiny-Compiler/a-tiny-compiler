@@ -9,18 +9,17 @@ public enum Token_Class
 {
     Main, Int, Float, String, 
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
-    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis,LRoundParanthesis, RRoundParanthesis, LCurlyBrace, RCurlyBrace,
+    Dot, Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
     EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, 
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
-namespace JASON_Compiler
-{
-    
 
+namespace Tiny_Compiler
+{
     public class Token
     {
-       public string lex;
-       public Token_Class token_type;
+        public string lex;
+        public Token_Class token_type;
     }
 
     public class Scanner
@@ -32,8 +31,6 @@ namespace JASON_Compiler
         public Scanner()
         {
             // TODO: Update ReservedWords to Match Tokens
-           
-           
             ReservedWords.Add("if", Token_Class.If);
             ReservedWords.Add("int", Token_Class.Int);
             ReservedWords.Add("float", Token_Class.Float);
@@ -49,16 +46,13 @@ namespace JASON_Compiler
             ReservedWords.Add("endl", Token_Class.Endl);
             ReservedWords.Add("end", Token_Class.End);
             ReservedWords.Add("main", Token_Class.Main);
-          
-           
 
             // TODO: Update Operators to match tokens
-    
-
-
             Operators.Add(".", Token_Class.Dot);
             Operators.Add(";", Token_Class.Semicolon);
             Operators.Add(",", Token_Class.Comma);
+            Operators.Add("{", Token_Class.LCurlyParanthesis);
+            Operators.Add("}", Token_Class.RCurlyParanthesis);
             Operators.Add("(", Token_Class.LRoundParanthesis);
             Operators.Add(")", Token_Class.RRoundParanthesis);
             Operators.Add("=", Token_Class.EqualOp);
@@ -68,18 +62,14 @@ namespace JASON_Compiler
             Operators.Add("+", Token_Class.PlusOp);
             Operators.Add("-", Token_Class.MinusOp);
             Operators.Add("*", Token_Class.MultiplyOp);
-            Operators.Add("/", Token_Class.DivideOp);
-            Operators.Add("{", Token_Class.LCurlyBrace);
-            Operators.Add("}", Token_Class.RCurlyBrace); 
+            Operators.Add("/", Token_Class.DivideOp); 
             Operators.Add("&&", Token_Class.AndOp); 
-            Operators.Add("||", Token_Class.OrOp); 
-        
-
-
-
+            Operators.Add("||", Token_Class.OrOp);
+            Operators.Add(":=", Token_Class.AssignOp);
         }
-    // TODO: Update Scanning Function
-    public void StartScanning(string SourceCode)
+
+        // TODO: Update Scanning Function
+        public void StartScanning(string SourceCode)
         {
             for(int i=0; i<SourceCode.Length;i++)
             {
@@ -109,7 +99,7 @@ namespace JASON_Compiler
                 }
             }
             
-            JASON_Compiler.TokenStream = Tokens;
+            Tiny_Compiler.TokenStream = Tokens;
         }
 
         // TODO: Implement FindTokenClass
@@ -118,65 +108,55 @@ namespace JASON_Compiler
             Token_Class TC;
             Token Tok = new Token();
             Tok.lex = Lex;
-            //Is it a reserved word?
-          if(isKeyWord(Lex)) 
-          {
-               Tok.token_type=ReservedWords[Lex];
-               Tokens.Add(Tok);
-          }
-          else if(isConstant(Lex)) 
-          {
-               Tok.token_type=Token_Class.Constant;
-               Tokens.Add(Tok);
-          }
-          else if(isOperator(Lex)) 
-          {
-               Tok.token_type=Operators[Lex];
-               Tokens.Add(Tok);
-          }
-          else if(isString(Lex)) 
-          {
-               Tok.token_type=Token_Class.Literal;
-               Tokens.Add(Tok);
-          }
-          else if(isIdentifier(Lex)) 
-          {
-               Tok.token_type=Token_Class.Idenifier;
-               Tokens.Add(Tok);
-          }
-          else
-          {
-               Errors.Error_List.Add(Lex);
-          }
-           
 
-            //Is it an identifier?
-            
-
-            //Is it a Constant?
-
-            //Is it an operator?
-
-            //Is it an undefined?
+            if(isKeyWord(Lex)) 
+            {
+                Tok.token_type=ReservedWords[Lex];
+                Tokens.Add(Tok);
+            }
+            //Is it an Integer? (which for some reason is called Constant)
+            else if (isConstant(Lex)) 
+            {
+                Tok.token_type=Token_Class.Constant;
+                Tokens.Add(Tok);
+            }
+            else if(isOperator(Lex)) 
+            {
+                Tok.token_type=Operators[Lex];
+                Tokens.Add(Tok);
+            }
+            else if(isString(Lex)) 
+            {
+                Tok.token_type=Token_Class.Literal;
+                Tokens.Add(Tok);
+            }
+            else if (isIdentifier(Lex)) 
+            {
+                Tok.token_type=Token_Class.Idenifier;
+                Tokens.Add(Tok);
+            }
+            else
+            {
+                Errors.Error_List.Add(Lex);
+            }
         }
 
     
         // TODO: Implement Checker Functions
-         bool isOperator(string lex)
+        bool isOperator(string lex)
         {
             bool isValid = false;
-            // Check if the lex is a Operator or not.
             if(Operators.ContainsKey(lex))
             {
-                isValid = true;
+            isValid = true;
             }
 
             return isValid;
         } 
-         bool isKeyWord(string lex)
+        
+        bool isKeyWord(string lex)
         {
             bool isValid = false;
-            // Check if the lex is a Operator or not.
             if(ReservedWords.ContainsKey(lex))
             {
                 isValid = true;
@@ -184,42 +164,39 @@ namespace JASON_Compiler
 
             return isValid;
         }
-         bool isString(string lex)
+
+        bool isString(string lex)
         {
             bool isValid = false; 
-            // Check if the lex is a String or not.
-           var regx = new Regex(@"""[^""]*""", RegexOptions.Compiled);
+            var regx = new Regex(@"""[^""]*""", RegexOptions.Compiled);
             if(regx.IsMatch(lex))
             {
-                isValid = true; 
-    
+                isValid = true;
             }
 
             return isValid;
         }
+
         bool isIdentifier(string lex)
         {
             bool isValid=false;
-            // Check if the lex is an identifier or not.
             var regx=new Regex(@"[A-Za-z][A-Za-z0-9]*",RegexOptions.Compiled);
             if(regx.IsMatch(lex))
             {
-                isValid = true; 
-    
+                isValid = true;
             }
             
             return isValid;
         }
+
         bool isConstant(string lex)
         {
-         // Check if the lex is a constant (Number) or not.
-
+            // Check if the lex is a constant (Number) or not.
             bool isValid = false; 
             var regx=new Regex(@"[\+\-]?[0-9]+(\.[0-9]+)?",RegexOptions.Compiled);
             if(regx.IsMatch(lex))
             {
-                isValid = true; 
-    
+                isValid = true;
             }
 
             return isValid;
