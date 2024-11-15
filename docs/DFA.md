@@ -207,6 +207,7 @@ flowchart LR
 ### Condition_Operators 
 
 - Regex: `< | > | = | <>`
+- Any: `.`
 
 ```mermaid
 flowchart LR
@@ -217,7 +218,10 @@ flowchart LR
   q1 --> |#62;| q4((("q4"))):::finalState
   q0 --> |"~[#60;#62;#61;]"| trap((("Trap"))):::trap
   q1 --> |"~#62;"| trap((("Trap"))):::trap
- 
+  q2 --> |"Any"| trap((("Trap"))):::trap
+  q3 --> |"Any"| trap((("Trap"))):::trap
+  q4 --> |"Any"| trap((("Trap"))):::trap
+
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
@@ -231,6 +235,7 @@ flowchart LR
 ### Boolean_Operators
 
 - Regex: `&& | \|\|`
+- Any: `.`
 
 ```mermaid
 flowchart LR
@@ -242,6 +247,8 @@ flowchart LR
   q0 --> |"~[#38;#124;]"| trap((("Trap"))):::trap
   q1 --> |"~#38;"| trap((("Trap"))):::trap
   q2 --> |"~#124;"| trap((("Trap"))):::trap
+  q3 --> |"Any"| trap((("Trap"))):::trap
+  q4 --> |"Any"| trap((("Trap"))):::trap
  
 
   classDef startNode fill:none,stroke:none;
