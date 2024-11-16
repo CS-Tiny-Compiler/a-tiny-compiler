@@ -4,9 +4,9 @@ A simple compiler for a tiny language, written using C#.
 - [Tiny Language Description](https://docs.google.com/document/d/1WbSTlhhWeW67SFEdHkaQGiKx4_WBjdlX/edit?rtpof=true&tab=t.0)
 
 
-## Local Setup
+### Testing
 
-### Unit Tests
+#### Setup
 
 **Add NUnit NuGet Packages**
 
@@ -21,11 +21,14 @@ Alternatively, you can use the *Package Manager Console*:
 Install-Package NUnit
 Install-Package NUnit3TestAdapter
 ```
-
 ---
 
 if you encounter reference errors, make sure a reference to the main project is present in the test project.
-
 - Right-click on the test project (*TinyCompiler.Tests*) in Solution Explorer.
 - Select Add > Project Reference.
 - Check on the main project (*TINY_Compiler*) and click OK.
+
+#### Running Tests
+- In Visual Studio, go to Test > Test Explorer from the menu
+- **Run All** to execute all tests, or choose specific tests to execute
+
