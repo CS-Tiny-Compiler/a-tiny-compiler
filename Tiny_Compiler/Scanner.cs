@@ -10,7 +10,7 @@ public enum Token_Class
     Main, Int, Float, String,
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
     Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
-    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp,
+    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp,GreaterThanOrEqualOp,LessThanOrEqualOp,
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
 
@@ -65,6 +65,8 @@ namespace Tiny_Compiler
             Operators.Add("&&", Token_Class.AndOp);
             Operators.Add("||", Token_Class.OrOp);
             Operators.Add(":=", Token_Class.AssignOp);
+            Operators.Add(">=", Token_Class.GreaterThanOrEqualOp);
+            Operators.Add("<=", Token_Class.LessThanOrEqualOp);
         }
 
         // TODO: Update Scanning Function
@@ -119,12 +121,20 @@ namespace Tiny_Compiler
 
                         CurrentLexeme += SourceCode[++i];
                     }
+                    //Check For letters Mixed With Number
+                    if(i+1 < SourceCode.Length && (isLetter(SourceCode[i+1])))
+                    {
+                        while(i+1 < SourceCode.Length && (isLetter(SourceCode[i+1]) || isDigit(SourceCode[i + 1])))
+                        {
+                            CurrentLexeme+=SourceCode[++i];
+                        }
+                        Errors.Error_List.Add("Mix of number and identifier: " + CurrentLexeme);
+                    }
 
                     if (decimalPointCount < 2)
                     {
                         FindTokenClass(CurrentLexeme);
                     }
-
                 }
                 // String Literals + Unclosed string error case
                 else if (CurrentChar == '\"')
@@ -172,7 +182,7 @@ namespace Tiny_Compiler
                 // Operators
                 else if (isOperator(CurrentLexeme) || CurrentChar == '|' || CurrentChar == '&' || CurrentChar == ':')  // operator or incompelete operator
                 {
-                    if (i + 1 < SourceCode.Length && (CurrentChar == ':' || CurrentChar == '|' || CurrentChar == '&' || CurrentChar == '<'))
+                    if (i + 1 < SourceCode.Length && (CurrentChar == ':' || CurrentChar == '|' || CurrentChar == '&' || CurrentChar == '<' || CurrentChar == '>'))
                     {
                         string comp_operator = CurrentChar + SourceCode[i + 1].ToString(); // generate complete operator
                         if (isOperator(comp_operator))
