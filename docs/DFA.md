@@ -209,7 +209,7 @@ flowchart LR
 ### Assignment_Operator
 
 - Regex: `:=`
-- Any: `=|~=`
+- Any: `=|(~=)`
 
 ```mermaid
 flowchart LR
@@ -219,6 +219,8 @@ flowchart LR
   q0 --> |"~:"| trap(("Trap")):::trap
   q1 --> |"~="| trap(("Trap")):::trap
   q2 --> |"Any"| trap(("Trap")):::trap
+
+  trap --> |Any| trap(("Trap")):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
