@@ -74,10 +74,10 @@ flowchart LR
 flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
 
-  q0 --> |``| q1(("q1")):::normal
+  q0 --> |#34;| q1(("q1")):::normal
   q0 --> |"Other"| q3(("Trap")):::trapState
   q1 --> |"Other"| q1
-  q1 --> |``| q2((("q2"))):::finalState
+  q1 --> |#34;| q2((("q2"))):::finalState
   q2 --> |"Any"| q3
   q3 --> |"Any"| q3
 
