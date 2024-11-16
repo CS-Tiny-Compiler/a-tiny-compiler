@@ -236,9 +236,9 @@ flowchart LR
 
 ### Delimiters
 
-- Regex: `{|}|;|,|(|)`
-- Other: `~({|}|;|,|(|))`
-- Any: `(|~(`
+- Regex: `{|}|;|,|\(|\)`
+- Other: `~({|}|;|,|\(|\))`
+- Any: `\(|(~\()`
 
 ```mermaid
 flowchart LR
