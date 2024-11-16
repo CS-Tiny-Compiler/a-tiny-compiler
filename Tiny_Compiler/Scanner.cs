@@ -74,6 +74,7 @@ namespace Tiny_Compiler
         {
             Errors.Error_List.Clear();
 
+
             for (int i = 0; i < SourceCode.Length; i++)
             {
                 char CurrentChar = SourceCode[i];
