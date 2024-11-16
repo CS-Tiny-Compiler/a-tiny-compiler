@@ -10,7 +10,7 @@ public enum Token_Class
     Main, Int, Float, String,
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
     Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
-    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp,GreaterThanOrEqualOp,LessThanOrEqualOp,
+    EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, GreaterThanOrEqualOp, LessThanOrEqualOp,
     DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
 }// comment
 
@@ -72,7 +72,7 @@ namespace Tiny_Compiler
         // TODO: Update Scanning Function
         public void StartScanning(string SourceCode)
         {
-            Errors.Error_List.Clear();   
+            Errors.Error_List.Clear();
 
             for (int i = 0; i < SourceCode.Length; i++)
             {
@@ -93,10 +93,12 @@ namespace Tiny_Compiler
                 }
                 // Number + MutliDot error case
                 else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode))
-                { 
-                    if (CurrentChar == '-' || CurrentChar == '+') // adding sign of number
+                {
+                    if (isSignedNumber(CurrentChar, i, SourceCode)) // adding sign of number
                     {
                         CurrentLexeme += SourceCode[++i];
+                        while (i + 1 < SourceCode.Length && SourceCode[i + 1] == ' ')
+                            i++;
                     }
 
                     int decimalPointCount = 0;
@@ -122,11 +124,11 @@ namespace Tiny_Compiler
                         CurrentLexeme += SourceCode[++i];
                     }
                     //Check For letters Mixed With Number
-                    if(i+1 < SourceCode.Length && (isLetter(SourceCode[i+1])))
+                    if (i + 1 < SourceCode.Length && (isLetter(SourceCode[i + 1])))
                     {
-                        while(i+1 < SourceCode.Length && (isLetter(SourceCode[i+1]) || isDigit(SourceCode[i + 1])))
+                        while (i + 1 < SourceCode.Length && (isLetter(SourceCode[i + 1]) || isDigit(SourceCode[i + 1])))
                         {
-                            CurrentLexeme+=SourceCode[++i];
+                            CurrentLexeme += SourceCode[++i];
                         }
                         Errors.Error_List.Add("Mix of number and identifier: " + CurrentLexeme);
                     }
@@ -139,8 +141,8 @@ namespace Tiny_Compiler
                 // String Literals + Unclosed string error case
                 else if (CurrentChar == '\"')
                 {
-           
-                    while (i + 1 < SourceCode.Length && SourceCode[i+1] != '\"')
+
+                    while (i + 1 < SourceCode.Length && SourceCode[i + 1] != '\"')
                     {
                         CurrentLexeme += SourceCode[++i];
                     }
@@ -166,7 +168,7 @@ namespace Tiny_Compiler
                     {
                         CurrentLexeme += SourceCode[i];
 
-                        if (SourceCode[i] == '*' && i+1 < SourceCode.Length && SourceCode[i + 1] == '/')
+                        if (SourceCode[i] == '*' && i + 1 < SourceCode.Length && SourceCode[i + 1] == '/')
                         {
                             CurrentLexeme += SourceCode[++i];
                             break;
@@ -174,7 +176,7 @@ namespace Tiny_Compiler
 
                         i++;
                     }
-                    if (!(CurrentLexeme[CurrentLexeme.Length - 2] == '*' && CurrentLexeme[CurrentLexeme.Length-1]=='/'))
+                    if (!(CurrentLexeme[CurrentLexeme.Length - 2] == '*' && CurrentLexeme[CurrentLexeme.Length - 1] == '/'))
                     {
                         Errors.Error_List.Add("Unclosed comment: " + CurrentLexeme);
                     }
@@ -211,7 +213,7 @@ namespace Tiny_Compiler
             Token Tok = new Token();
             Tok.lex = Lex;
 
-            Lex=Lex.ToLower();
+            Lex = Lex.ToLower();
 
             if (isString(Lex))
             {
@@ -253,9 +255,38 @@ namespace Tiny_Compiler
         {
             return (c >= '0' && c <= '9');
         }
+        /*bool isSignedNumber(char c, int i, string SourceCode)
+        {
+            return ((c == '-' && (i == 0 || !(isDigit(SourceCode[i - 1]) || isLetter(SourceCode[i - 1])))) || (c == '+' && (i == 0 || !(isDigit(SourceCode[i - 1]) || isLetter(SourceCode[i - 1])))) && (i + 1 < SourceCode.Length && isDigit(SourceCode[i + 1])));
+        }*/
         bool isSignedNumber(char c, int i, string SourceCode)
         {
-            return ((c == '-' && (i == 0 || !isDigit(SourceCode[i - 1])) || (c == '+' && (i == 0 || !isDigit(SourceCode[i - 1]))) && i + 1 < SourceCode.Length && isDigit(SourceCode[i + 1])));
+            if ((c == '-' || c == '+') && i + 1 < SourceCode.Length)
+            {
+                int j = i - 1;
+
+                while (j >= 0 && SourceCode[j] == ' ')
+                    j--;
+
+                if (j >= 0)
+                {
+                    char prevChar = SourceCode[j];
+
+                    // If the previous character is a digit, letter, or ')', it's an operator, not a sign
+                    if (isDigit(prevChar) || isLetter(prevChar) || prevChar == ')')
+                    {
+                        return false;
+                    }
+                }
+
+                int k = i + 1;
+                while (k < SourceCode.Length && SourceCode[k] == ' ')
+                    k++;
+
+                return k < SourceCode.Length && isDigit(SourceCode[k]);
+            }
+
+            return false;
         }
 
         // TODO: Implement Checker Functions
@@ -297,7 +328,7 @@ namespace Tiny_Compiler
         {
             bool isValid = false;
             var regx = new Regex(@"^[A-Za-z][A-Za-z0-9]*", RegexOptions.Compiled);
-            
+
             if (regx.IsMatch(lex))
             {
                 isValid = true;
