@@ -177,8 +177,8 @@ flowchart LR
 
 ### Arithmetic_Operators
 
-- Regex: `\+|\-|\*|/`
-- Any: `-|~-"`
+- Regex: `\+|-|\*|/`
+- Any: `-|(~-)`
 
 <!-- I am using these HTML character codes (e.g. #43;) since directly using '+' or '-' or '*' gives syntax errors with the mermaid syntax -->
 
@@ -195,6 +195,8 @@ flowchart LR
   q2 --> |"Any"| trap(("Trap")):::trap
   q3 --> |"Any"| trap(("Trap")):::trap
   q4 --> |"Any"| trap(("Trap")):::trap
+
+  trap --> |Any| trap(("Trap")):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
