@@ -1,8 +1,8 @@
-# Deterministic Finite Automata
+# Tokens Regex + Deterministic Finite Automata
 
 ### Number
 
-- Regex : `(\+|\-)?[0-9]+(\.[0-9]+)?`
+- Regex : `(\+|-)?[0-9]+(\.[0-9]+)?`
 - Digit : `[0-9]`
 - Other : `~[0-9]`
 - Any : `Other|Digit`
@@ -11,13 +11,13 @@
   flowchart LR
     start(((Start))):::startNode --> q0(("q0")):::normal
 
-    q0 --> |"'+','-'"| q1(("q1")):::normal
+    q0 --> |"#43;,#45;"| q1(("q1")):::normal
     q0 --> |Digit| q2((("q2"))):::finalState
-    q0 --> |"~['+','-',Digit]"| trap(("Trap")):::trap
+    q0 --> |"~[#43;|#45;|Digit]"| trap(("Trap")):::trap
     q1 --> |Digit| q2
     q1 --> |Other| trap
     q2 --> |"."| q3(("q3")):::normal
-    q2 --> |"~['.',Digit]"| trap
+    q2 --> |"~[.|Digit]"| trap
     q2 --> |Digit| q2
     q3 --> |Digit| q4((("q4"))):::finalState
     q3 --> |Other| trap
