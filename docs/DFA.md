@@ -31,7 +31,6 @@
     classDef finalState stroke:#000,stroke-width:3px;
     classDef trap stroke:#000,stroke-width:2px;
 
-    linkStyle 0 stroke:white;
     linkStyle default stroke:#333,stroke-width:2px,fill:none;
 
 ```
@@ -58,14 +57,16 @@ flowchart LR
     classDef finalState stroke:#000,stroke-width:3px;
     classDef trap stroke:#000,stroke-width:2px;
 
-    linkStyle 0 stroke:white;
     linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
 
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 ### String
 
-- Regex: ` "(~")*"`
+- Regex: `"(~")*"`
 - Other: `(~")`
 - Any: `Other|"`
 
@@ -85,13 +86,16 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trapState stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
 
 ### Reserved_Keywords
 
 - Regex: `int | float | string | read | write | repeat | until | if | elseif | else | then | return | endl | end | main`
+
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 ```mermaid
   flowchart LR
@@ -168,7 +172,6 @@ flowchart LR
   classDef normal stroke:#000,stroke-width:2px;
   classDef finalState stroke:#000,stroke-width:3px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
 
@@ -198,7 +201,6 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trap stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
 
@@ -221,9 +223,12 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trap stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
+
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 ### Delimiters
 
@@ -255,9 +260,12 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trap stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
+
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 ### Condition_Operators
 
@@ -283,7 +291,6 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trap stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
 
@@ -311,6 +318,5 @@ flowchart LR
   classDef finalState stroke:#000,stroke-width:3px;
   classDef trap stroke:#000,stroke-width:2px;
 
-  linkStyle 0 stroke:white;
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
