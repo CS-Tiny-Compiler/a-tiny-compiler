@@ -1,85 +1,83 @@
 # Deterministic Finite Automata
 
-### Example
+### Number
 
-- Regex: `a(a|b)b`
-
-```mermaid
-flowchart LR
-  start(((Start))):::startNode --> q0(("q0")):::normal
-  q0 --> |a| q1(("q1")):::normal
-  q1 --> |a| q2(("q2")):::normal
-  q1 --> |b| q2
-  q2 --> |b| q3((("q3"))):::finalState
-
-  classDef startNode fill:none,stroke:none;
-  classDef normal stroke:#000,stroke-width:2px;
-  classDef finalState stroke:#000,stroke-width:3px;
-
-  linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3 stroke:#333,stroke-width:2px,fill:none;
-```
-
-###   Number
-- Regex : `[\+\-]?[0-9]+(\.[0-9]+)?`
+- Regex : `(\+|\-)?[0-9]+(\.[0-9]+)?`
 - Digit : `[0-9]`
 - Other : `~[0-9]`
-- Any   :  `Other|Digit`
+- Any : `Other|Digit`
+
 ```mermaid
-flowchart LR
-  start(((Start))):::startNode --> q0(("q0")):::normal
+  flowchart LR
+    start(((Start))):::startNode --> q0(("q0")):::normal
 
-  q0 --> |"'+','-'"| q1(("q1")):::normal
-  q0 --> |Digit| q2((("q2"))):::finalState
-  q0 --> |"~['+','-',Digit]"| trap((("Trap"))):::trap
+    q0 --> |"'+','-'"| q1(("q1")):::normal
+    q0 --> |Digit| q2((("q2"))):::finalState
+    q0 --> |"~['+','-',Digit]"| trap((("Trap"))):::trap
+    q1 --> |Digit| q2
+    q1 --> |Other| trap
+    q2 --> |"."| q3(("q3")):::normal
+    q2 --> |"~['.',Digit]"| trap
+    q2 --> |Digit| q2
+    q3 --> |Digit| q4((("q4"))):::finalState
+    q3 --> |Other| trap
+    q4 --> |Digit| q4
+    q4 --> |Other| trap
 
-  q1 --> |Digit| q2
+    trap --> |Any| trap
 
-  q1 --> |Other| trap
+    classDef startNode fill:none,stroke:none;
+    classDef normal stroke:#000,stroke-width:2px;
+    classDef finalState stroke:#000,stroke-width:3px;
+    classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
 
-  q2 --> |"."| q3(("q3")):::normal
-  q2 --> |"~['.',Digit]"| trap
-  q2 --> |Digit| q2
-
-  q3 --> |Digit| q4((("q4"))):::finalState
-  q3 --> |Other| trap
-
-  q4 --> |Digit| q4
-  q4 --> |Other| trap
-
-  trap --> |Any| trap
-
-
-
-
-  classDef startNode fill:none,stroke:none;
-  classDef normal stroke:#000,stroke-width:2px;
-  classDef finalState stroke:#000,stroke-width:3px;
-  classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
-
-  linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3,4,5,6,7,8,9,10,11,12,13 stroke:#333,stroke-width:2px,fill:none;
+    linkStyle 0 stroke-width:2px;
+    linkStyle default stroke:#333,stroke-width:2px,fill:none;
 
 ```
 
-###  String
+### Identifier
+
+- Regex: `[A-Z|a-z][A-Z|a-z|0-9]*`
+- Other: `~[A-Z|a-z]`
+- Any: `Other|[A-Z|a-z]`
+
+```mermaid
+flowchart LR
+    start(((Start))):::startNode --> q0(("q0")):::normal
+    q0 --> |"[a-z]"| q1(("q1")):::normal
+    q0 --> |"[A-Z]"| q1(("q1")):::normal
+    q0 --> |Other| Trap(("Trap")):::normal
+    q1 --> |"[a-z|A-Z|0-9]"| q1((("q1"))):::finalState
+    q1 --> |"~[A-Z|a-z|0-9]"| Trap((("Trap"))):::trap
+
+    Trap --> |Any| Trap(("Trap")):::trap
+
+    classDef startNode fill:none,stroke:none;
+    classDef normal stroke:#000,stroke-width:2px;
+    classDef finalState stroke:#000,stroke-width:3px;
+    classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
+
+    linkStyle 0 stroke-width:2px;
+    linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
+```
+
+### String
+
 - Regex: ` "(~")*"`
 - Other: `(~")`
 - Any: `Other|"`
+
 ```mermaid
 flowchart LR
   start(((Start))):::startNode --> q0(("q0")):::normal
 
   q0 --> |``| q1(("q1")):::normal
-  q0 --> |"Other"| q3(("trap")):::trapState  
-
+  q0 --> |"Other"| q3(("trap")):::trapState
   q1 --> |"Other"| q1
   q1 --> |``| q2((("q2"))):::finalState
-  
-
-  q2 --> |"Any"| q3    
-
-  q3 --> |"Any"| q3  
+  q2 --> |"Any"| q3
+  q3 --> |"Any"| q3
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
@@ -87,7 +85,7 @@ flowchart LR
   classDef trapState fill:red,stroke:#333,stroke-width:2px;
 
   linkStyle 0 stroke-width:2px;
-  linkStyle 1,2,3,4,5,6 stroke:#333,stroke-width:2px,fill:none;
+  linkStyle default stroke:#333,stroke-width:2px,fill:none;
 
 
 
@@ -179,7 +177,8 @@ linkStyle default stroke:#333,stroke-width:2px,fill:none;
 
 ### Arithmetic_Operators
 
-- Regex: `\+|-|\*|\/`
+- Regex: `\+|\-|\*|/`
+- Any: `-|~-"`
 
 <!-- I am using these HTML character codes (e.g. #43;) since directly using '+' or '-' or '*' gives syntax errors with the mermaid syntax -->
 
@@ -190,7 +189,12 @@ flowchart LR
   q0 --> |#45;| q2((("q2"))):::finalState
   q0 --> |#42;| q3((("q3"))):::finalState
   q0 --> |#47;| q4((("q4"))):::finalState
-  q0 --> |"~[#43;#45;#42;#47;]"| trap((("Trap"))):::trap
+  q0 --> |"~[#43;|#45;|#42;|#47;]"| trap((("Trap"))):::trap
+
+  q1 --> |"Any"| trap((("Trap"))):::trap
+  q2 --> |"Any"| trap((("Trap"))):::trap
+  q3 --> |"Any"| trap((("Trap"))):::trap
+  q4 --> |"Any"| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
@@ -204,6 +208,7 @@ flowchart LR
 ### Assignment_Operator
 
 - Regex: `:=`
+- Any: `=|~=`
 
 ```mermaid
 flowchart LR
@@ -212,6 +217,7 @@ flowchart LR
   q1 --> |=| q2((("q2"))):::finalState
   q0 --> |"~:"| trap((("Trap"))):::trap
   q1 --> |"~="| trap((("Trap"))):::trap
+  q2 --> |"Any"| trap((("Trap"))):::trap
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
@@ -224,9 +230,9 @@ flowchart LR
 
 ### Delimiters
 
-- Regex: `{|}|;|\.|,|(|)`
-- Other: `~[{};,\(\)\.]`
-- Any: `.`
+- Regex: `{|}|;|,|(|)`
+- Other: `~({|}|;|,|(|))`
+- Any: `(|~(`
 
 ```mermaid
 flowchart LR
@@ -234,7 +240,6 @@ flowchart LR
   q0 --> |"{"| q1((("q1"))):::finalState
   q0 --> |"}"| q2((("q2"))):::finalState
   q0 --> |";"| q3((("q3"))):::finalState
-  q0 --> |"."| q4((("q4"))):::finalState
   q0 --> |","| q5((("q5"))):::finalState
   q0 --> |"("| q6((("q6"))):::finalState
   q0 --> |")"| q7((("q7"))):::finalState
@@ -242,7 +247,6 @@ flowchart LR
   q1 --> |Any| trap((("Trap"))):::trap
   q2 --> |Any| trap((("Trap"))):::trap
   q3 --> |Any| trap((("Trap"))):::trap
-  q4 --> |Any| trap((("Trap"))):::trap
   q5 --> |Any| trap((("Trap"))):::trap
   q6 --> |Any| trap((("Trap"))):::trap
   q7 --> |Any| trap((("Trap"))):::trap
@@ -258,10 +262,10 @@ flowchart LR
   linkStyle 1 stroke:#333,stroke-width:2px,fill:none;
 ```
 
-### Condition_Operators 
+### Condition_Operators
 
 - Regex: `< | > | = | <>`
-- Any: `.`
+- Any: `=|~=`
 
 ```mermaid
 flowchart LR
@@ -270,7 +274,7 @@ flowchart LR
   q0 --> |#62;| q2((("q2"))):::finalState
   q0 --> |#61;| q3((("q3"))):::finalState
   q1 --> |#62;| q4((("q4"))):::finalState
-  q0 --> |"~[#60;#62;#61;]"| trap((("Trap"))):::trap
+  q0 --> |"~[#60;|#62;|#61;]"| trap((("Trap"))):::trap
   q1 --> |"~#62;"| trap((("Trap"))):::trap
   q2 --> |"Any"| trap((("Trap"))):::trap
   q3 --> |"Any"| trap((("Trap"))):::trap
@@ -289,7 +293,7 @@ flowchart LR
 ### Boolean_Operators
 
 - Regex: `&& | \|\|`
-- Any: `.`
+- Any: `&|~&`
 
 ```mermaid
 flowchart LR
@@ -298,12 +302,12 @@ flowchart LR
   q1 --> |#38;| q3((("q3"))):::finalState
   q0 --> |#124;| q2(("q2")):::normal
   q2 --> |#124;| q4((("q4"))):::finalState
-  q0 --> |"~[#38;#124;]"| trap((("Trap"))):::trap
+  q0 --> |"~[#38;,#124;]"| trap((("Trap"))):::trap
   q1 --> |"~#38;"| trap((("Trap"))):::trap
   q2 --> |"~#124;"| trap((("Trap"))):::trap
   q3 --> |"Any"| trap((("Trap"))):::trap
   q4 --> |"Any"| trap((("Trap"))):::trap
- 
+
 
   classDef startNode fill:none,stroke:none;
   classDef normal stroke:#000,stroke-width:2px;
