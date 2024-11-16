@@ -13,7 +13,7 @@
 - Arithmetic_Operators -> `\+|\-|\*|/`
 - Assignment_Operator -> `:=`
 - Delimiters -> `{|}|;|,|(|)`
-- Condition_Operators -> `< | > | = | <>`
-- Boolean_Operators -> `&& | \|\|`
+- Condition_Operators -> `<|>|=|(<>)|(>=)|(<=)`
+- Boolean_Operators -> `(&&)|(\|\|)`
 - Identifiers -> `[A-Z|a-z][A-Z|a-z|0-9]*`
 

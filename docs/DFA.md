@@ -273,7 +273,7 @@ flowchart LR
 
 ### Condition_Operators
 
-- Regex: `<|>|=|(<>)`
+- Regex: `<|>|=|(<>)|(>=)|(<=)`
 - Any: `=|~=`
 
 ```mermaid
@@ -284,10 +284,14 @@ flowchart LR
   q0 --> |#61;| q3((("q3"))):::finalState
   q1 --> |#62;| q4((("q4"))):::finalState
   q0 --> |"~[#60;|#62;|#61;]"| trap(("Trap")):::trap
-  q1 --> |"~#62;"| trap(("Trap")):::trap
-  q2 --> |"Any"| trap(("Trap")):::trap
+  q1 --> |"~[#62;|#61;]"| trap(("Trap")):::trap
+  q2 --> |"~#61;"| trap(("Trap")):::trap
   q3 --> |"Any"| trap(("Trap")):::trap
   q4 --> |"Any"| trap(("Trap")):::trap
+  q1 --> |#61;| q5((("q5"))):::finalState
+  q2 --> |#61;| q6((("q6"))):::finalState
+  q5 --> |"Any"| trap(("Trap")):::trap
+  q6 --> |"Any"| trap(("Trap")):::trap
 
   trap --> |Any| trap
 
