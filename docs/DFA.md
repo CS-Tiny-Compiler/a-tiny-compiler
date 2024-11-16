@@ -313,3 +313,29 @@ flowchart LR
   linkStyle 0 stroke-width:2px;
   linkStyle 1,2,3,4 stroke:#333,stroke-width:2px,fill:none;
 ```
+
+### Identifier
+- Regex: `[A-Z|a-z][A-Z|a-z|0-9]*`
+- Other: `~[A-Z|a-z]`
+- Any: `Other|[A-Z|a-z]`
+
+```mermaid
+flowchart LR
+    start(((Start))):::startNode --> q0(("q0")):::normal
+    q0 --> |"[a-z]"| q1(("q1")):::normal
+    q0 --> |"[A-Z]"| q1(("q1")):::normal
+    q0 --> |Other| Trap(("Trap")):::normal
+
+    q1 --> |"[a-z|A-Z|0-9]"| q1((("q1"))):::finalState
+    q1 --> |"~[A-Z|a-z|0-9]"| Trap((("Trap"))):::trap
+
+    Trap --> |Any| Trap(("Trap")):::trap
+
+    classDef startNode fill:none,stroke:none;
+    classDef normal stroke:#000,stroke-width:2px;
+    classDef finalState stroke:#000,stroke-width:3px;
+    classDef trap fill:#f00,stroke:#f00,stroke-width:2px;
+
+    linkStyle 0 stroke-width:2px;
+    linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
+```
