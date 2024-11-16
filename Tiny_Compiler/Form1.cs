@@ -23,6 +23,7 @@ namespace Tiny_Compiler
             dataGridView1.Rows.Clear();
             Tiny_Compiler.TokenStream.Clear();
             textBox2.Clear();
+
             //string Code=textBox1.Text.ToLower();
             string Code = textBox1.Text;
             Tiny_Compiler.Start_Compiling(Code);
