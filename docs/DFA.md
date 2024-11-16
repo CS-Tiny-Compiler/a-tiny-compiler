@@ -1,5 +1,15 @@
 # Deterministic Finite Automata
 
+<!--
+1.Removed dot operator in delimiter DFA
+2.Update Arithmatic operator
+  ->added any and | in transitions of DFA
+3.Uncertain of the Any statements that had been updated, perhaps there is a better way to write it.
+4.On mutiple transitions you may find that I wrote some as , and some as | ,it will be finialized once the doctor emails back.
+
+IMPORTANT REMINDER: Other & any ARENOT REGEX but transition s ~[+] Wrong ~(+) Correct
+ -->
+
 ### Number
 
 - Regex : `(\+|\-)?[0-9]+(\.[0-9]+)?`
@@ -37,7 +47,6 @@
 ```
 
 ### Identifier
-
 - Regex: `[A-Z|a-z][A-Z|a-z|0-9]*`
 - Other: `~[A-Z|a-z]`
 - Any: `Other|[A-Z|a-z]`
@@ -48,6 +57,7 @@ flowchart LR
     q0 --> |"[a-z]"| q1(("q1")):::normal
     q0 --> |"[A-Z]"| q1(("q1")):::normal
     q0 --> |Other| Trap(("Trap")):::normal
+
     q1 --> |"[a-z|A-Z|0-9]"| q1((("q1"))):::finalState
     q1 --> |"~[A-Z|a-z|0-9]"| Trap((("Trap"))):::trap
 
@@ -61,6 +71,7 @@ flowchart LR
     linkStyle 0 stroke-width:2px;
     linkStyle 1,2,3,4,5 stroke:#333,stroke-width:2px,fill:none;
 ```
+
 
 ### String
 
