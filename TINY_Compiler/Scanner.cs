@@ -11,7 +11,7 @@ public enum Token_Class
     Read, Write, Repeat, Until, If, ElseIf, Else, Then, Return, Endl, End,
     Semicolon, Comma, LCurlyParanthesis, RCurlyParanthesis, LRoundParanthesis, RRoundParanthesis,
     EqualOp, LessThanOp, GreaterThanOp, NotEqualOp, PlusOp, MinusOp, MultiplyOp, GreaterThanOrEqualOp, LessThanOrEqualOp,
-    DivideOp, AndOp, OrOp, AssignOp, Idenifier, Constant, Literal // string literal
+    DivideOp, AndOp, OrOp, AssignOp, Identifier, Constant, Literal // string literal
 }// comment
 
 namespace Tiny_Compiler
@@ -237,7 +237,7 @@ namespace Tiny_Compiler
             }
             else if (isIdentifier(Lex))
             {
-                Tok.token_type = Token_Class.Idenifier;
+                Tok.token_type = Token_Class.Identifier;
                 Tokens.Add(Tok);
             }
             else
