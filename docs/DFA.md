@@ -1,3 +1,22 @@
+# Compiler Theory Milestone 1
+
+**Date:** 17-Nov-2024
+
+## Team 15
+
+| Name             | Seat Number | Section Number |
+|------------------|-------------|----------------|
+| عبدالله ابراھیم احمد ابراھیم اسماعیل           | 2022170220      | 3      |
+| ملك خالد محمد بخیت الحادي           | 2022170432      | 5      |
+| مصطفى محمد صالح السید محمد البدراوى           | 2022170424      | 5      |
+| نوران ھیثم عثمان عثمان           | 2022170473      | 6      |
+| محمد أكرم محمد كامل           | 2022170355      | 4      |
+| أحمد خالد أحمد یسري           | 2022170016      | 1      |
+
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
+
 # Tokens Regex + Deterministic Finite Automata
 
 ### Number
@@ -238,7 +257,7 @@ flowchart LR
 
 - Regex: `{|}|;|,|\(|\)`
 - Other: `~({|}|;|,|\(|\))`
-- Any: `\(|(~\()`
+- Any: `(|~(`
 
 ```mermaid
 flowchart LR
@@ -302,6 +321,10 @@ flowchart LR
 
   linkStyle default stroke:#333,stroke-width:2px,fill:none;
 ```
+
+<div style="page-break-after: always; visibility: hidden"> 
+\pagebreak 
+</div>
 
 ### Boolean_Operators
 
