@@ -19,7 +19,11 @@ namespace Tiny_Compiler
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+            dataGridView1.Rows.Clear();
+            Tiny_Compiler.TokenStream.Clear();
             textBox2.Clear();
+
             //string Code=textBox1.Text.ToLower();
             string Code = textBox1.Text;
             Tiny_Compiler.Start_Compiling(Code);
@@ -27,9 +31,11 @@ namespace Tiny_Compiler
          //   PrintLexemes();
 
             PrintErrors();
+
         }
         void PrintTokens()
         {
+
             for (int i = 0; i < Tiny_Compiler.Tiny_Scanner.Tokens.Count; i++)
             {
                dataGridView1.Rows.Add(Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).lex, Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).token_type);

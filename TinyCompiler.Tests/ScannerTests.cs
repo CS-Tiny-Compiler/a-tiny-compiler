@@ -57,7 +57,7 @@ namespace TinyCompiler.Tests
         public void MultipleUnknownChars_ReturnErrors()
         {
             // Arrange
-            string input = "$#@! ^";
+            string input = "$# @! ^";
 
             // Act
             scanner.StartScanning(input);
@@ -65,6 +65,8 @@ namespace TinyCompiler.Tests
             // Assert
             foreach (char c in input)
             {
+                if (c.Equals(' ')) 
+                        continue;
                 Assert.Contains($"Unrecognized token: {c}", Errors.Error_List);
             }
         }
