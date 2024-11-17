@@ -57,7 +57,7 @@ namespace TinyCompiler.Tests
         public void MultipleUnknownChars_ReturnErrors()
         {
             // Arrange
-            string input = "$#@!^";
+            string input = "$#@! ^";
 
             // Act
             scanner.StartScanning(input);
