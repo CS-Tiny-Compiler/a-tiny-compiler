@@ -89,7 +89,7 @@ namespace TinyCompiler.Tests
                 }
                 else if (input[0] == '.')
                 {
-                    Assert.Contains($"Unrecognized token: .", Errors.Error_List);
+                    Assert.Contains($"Invalid Constant: {input}", Errors.Error_List);
                 }
                 else
                 {
