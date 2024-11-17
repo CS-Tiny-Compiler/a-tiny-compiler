@@ -65,8 +65,8 @@ namespace TinyCompiler.Tests
             // Assert
             foreach (char c in input)
             {
-                if (c.Equals(' ')) 
-                        continue;
+                if (c.Equals(' '))
+                    continue;
                 Assert.Contains($"Unrecognized token: {c}", Errors.Error_List);
             }
         }
