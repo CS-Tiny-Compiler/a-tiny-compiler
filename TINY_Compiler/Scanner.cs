@@ -86,6 +86,7 @@ namespace Tiny_Compiler
                 // Identifiers & Reserved keywords
                 if (isLetter(CurrentChar) || CurrentChar == '_')
                 {
+                    // TODO: Handle dot case
                     while (i + 1 < SourceCode.Length && (isLetter(SourceCode[i + 1]) || isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '_'))
                     {
                         CurrentLexeme += SourceCode[++i];
@@ -133,10 +134,12 @@ namespace Tiny_Compiler
                         }
                         Errors.Error_List.Add("Mix of number and identifier: " + CurrentLexeme);
                     }
-
-                    if (decimalPointCount < 2)
+                    else
                     {
-                        FindTokenClass(CurrentLexeme);
+                        if (decimalPointCount < 2)
+                        {
+                            FindTokenClass(CurrentLexeme);
+                        }
                     }
                 }
                 // String Literals + Unclosed string error case
@@ -200,7 +203,45 @@ namespace Tiny_Compiler
                 // Error
                 else
                 {
-                    Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
+                    // Greedy Scanning Cases
+                    if(i != SourceCode.Length - 1)
+                    {
+                        if (CurrentLexeme == ".")
+                        {
+                            int decimalPointCount = 0;
+                            while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
+                            {
+                                if (SourceCode[i + 1] == '.')
+                                {
+                                    decimalPointCount++;
+
+                                    if (decimalPointCount > 1)
+                                    {
+                                        // generate the rest of the error lexeme
+                                        while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
+                                        {
+                                            CurrentLexeme += SourceCode[++i];
+                                        }
+
+                                        Errors.Error_List.Add("More than one dot in number: " + CurrentLexeme);
+                                        break;
+                                    }
+                                }
+
+                                CurrentLexeme += SourceCode[++i];
+                            }
+                            // Example Case: .555
+                            Errors.Error_List.Add("Invalid Constant: " + CurrentLexeme);
+                        }
+                        else
+                        {
+                            Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
+                        }
+                    }
+                    else
+                    {
+                        Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
+                    }
                 }
             }
 
