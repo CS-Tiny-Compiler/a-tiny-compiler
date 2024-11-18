@@ -94,8 +94,9 @@ namespace Tiny_Compiler
                     FindTokenClass(CurrentLexeme);
                 }
                 // Number + MutliDot error case
-                else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode))
+                else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode) || CurrentChar=='.')
                 {
+
                     if (isSignedNumber(CurrentChar, i, SourceCode)) // adding sign of number
                     {
                         CurrentLexeme += SourceCode[++i];
@@ -146,7 +147,7 @@ namespace Tiny_Compiler
                 else if (CurrentChar == '\"')
                 {
 
-                    while (i + 1 < SourceCode.Length && SourceCode[i + 1] != '\"')
+                    while (i + 1 < SourceCode.Length && (SourceCode[i + 1] != '\"' && SourceCode[i + 1] != '\n'))
                     {
                         CurrentLexeme += SourceCode[++i];
                     }
@@ -203,45 +204,7 @@ namespace Tiny_Compiler
                 // Error
                 else
                 {
-                    // Greedy Scanning Cases
-                    if(i != SourceCode.Length - 1)
-                    {
-                        if (CurrentLexeme == ".")
-                        {
-                            int decimalPointCount = 0;
-                            while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
-                            {
-                                if (SourceCode[i + 1] == '.')
-                                {
-                                    decimalPointCount++;
-
-                                    if (decimalPointCount > 1)
-                                    {
-                                        // generate the rest of the error lexeme
-                                        while (i + 1 < SourceCode.Length && (isDigit(SourceCode[i + 1]) || SourceCode[i + 1] == '.'))
-                                        {
-                                            CurrentLexeme += SourceCode[++i];
-                                        }
-
-                                        Errors.Error_List.Add("More than one dot in number: " + CurrentLexeme);
-                                        break;
-                                    }
-                                }
-
-                                CurrentLexeme += SourceCode[++i];
-                            }
-                            // Example Case: .555
-                            Errors.Error_List.Add("Invalid Constant: " + CurrentLexeme);
-                        }
-                        else
-                        {
-                            Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
-                        }
-                    }
-                    else
-                    {
-                        Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
-                    }
+                    Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
                 }
             }
 
