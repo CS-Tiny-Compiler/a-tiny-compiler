@@ -89,6 +89,10 @@ A program in TINY consists of a set of functions (any number of functions (**zer
 Note: Check difference when switching Functions and FunctionStatement + Check if we need to add `| FunctionStatement` (I don't think we do but they for some reason have it added in the labs in JASON).
 
 ### 2. Functions -> Functions FunctionStatement | ε
+```
+Functions -> ε Funcs
+Funcs -> ε | FunctionStatement Funcs
+```
 
 ### 3. FunctionStatement -> FunctionDeclaration FunctionBody
 
@@ -99,6 +103,10 @@ Note: Check difference when switching Functions and FunctionStatement + Check if
 ### 6. ParametersList -> Parameters | ε
 
 ### 7. Parameters -> Parameters, Parameter | Parameter
+```
+Parameters -> Parameter Params
+Params -> ε | , Parameter Params
+```
 
 ### 8. Parameter -> DataType identifier
 
@@ -107,12 +115,20 @@ Note: Check difference when switching Functions and FunctionStatement + Check if
 ### 10. FunctionBody -> { Statements ReturnStatement }
 
 ### 11. Statements -> Statements Statement | Statement
+```
+Statements -> Statement Stmts
+Stmts -> ε | Statement Stmts
+```
 
 ### 12. Statement -> ReadStatement | WriteStatement | AssignmentStatement ; | DeclarationStatement | IfStatement | RepeatStatement | CommentStatement | FunctionCall ; | ε
 
 ### 13. ReadStatement -> read identifier ;
 
 ### 14. WriteStatement -> write Expression ; | write endl ;
+```
+WriteStatement -> write writeContent ;
+writeContent -> Expression | endl
+```
 
 ### 15. Term -> number | identifier | FunctionCall
 
@@ -121,16 +137,29 @@ Note: Check difference when switching Functions and FunctionStatement + Check if
 ### 17. ArgList -> Arguments | ε
 
 ### 18. Arguments -> Arguments, identifier | identifier
+```
+Arguments -> identifier Args
+Args -> ε | , identifier Args
+```
 
 ### 19. Expression -> string | Term | Equation
 
 Note: Equation is tricky
 
 ### 20. Equation -> Term ArithmeticTerms | ( Equation ) | ( Equation ) ArithmeticTerms
+```
+Equation -> Term ArithmeticTerms | ( Equation ) EquationTail
+EquationTail -> ε | ArithmeticTerms
+```
 
 Note: Also here can remove left recursion to be right recursion easily and it would be correct.
 
 ### 21. ArithmeticTerms -> ArithmeticTerms arithmetic_operator Term | ArithmeticTerms arithmetic_operator ( Equation ) | arithmetic_operator Term | arithmetic_operator ( Equation )
+```
+ArithmeticTerms -> arithmetic_operator ArithFactors ArithTerms
+ArithFactors -> Term | ( Equation )
+ArithTerms -> ε | arithmetic_operator ArithFactors ArithTerms
+```
 
 ### 22. AssignmentStatement -> identifier assignment_operator Expression
 
@@ -139,16 +168,28 @@ Note: Also here can remove left recursion to be right recursion easily and it wo
 Note: Here also I think we can switch "Declarations, identifier" and "Declarations, AssignmentStatement" to remove left recursion directly, but not sure if we can do that.
 
 ### 24. Declarations -> Declarations, identifier | Declarations, AssignmentStatement | identifier | AssignmentStatement
+```
+Declarations -> identifier Decls | AssignmentStatement Decls
+Decls -> ε | , identifier Decls | , AssignmentStatement Decls
+```
 
 ### 25. ReturnStatement -> return Expression ;
 
 ### 26. IfStatement -> if ConditionStatement then Statements ElseIfStatements ElseStatement end
 
-### 27. ConditionStatement -> ConditionStatement boolean_operator Condition | Condition 
+### 27. ConditionStatement -> ConditionStatement boolean_operator Condition | Condition
+```
+ConditionStatement -> Condition CondStmts
+CondStmts -> ε | boolean_operator Condition CondStmts
+```
 
 ### 28. Condition -> identifier condition_operator Term
 
 ### 29. ElseIfStatements -> ElseIfStatements elseif ConditionStatement then Statements | ε
+```
+ElseIfStatements -> elseif ConditionStatement then Statements ElseIfStmts | ε
+ElseIfStmts -> ε | elseif ConditionStatement then Statements ElseIfStmts
+```
 
 ### 30. ElseStatement -> else Statements | ε
 
@@ -157,6 +198,9 @@ Note: Here also I think we can switch "Declarations, identifier" and "Declaratio
 ### 32. CommentStatement -> / * CommentContent * /
 
 ### 33. CommentContent -> CommentContent Character | ε
+```
+CommentContent -> Character CommentContent | ε
+```
 
 ### 34. Character → Letter | number | Symbol
 
@@ -167,7 +211,7 @@ Note: Here also I think we can switch "Declarations, identifier" and "Declaratio
 ## Questions to ask
 - Is it allowed to apply right recursion directly if it is correct?
 - Is it ok to use something like 'condition_operator' as a terminal? or do we have to create a non-terminal ConditionOperators = > | < | >= | <= ?
-- Are our rules correct? (specifically equation)
+- Are our rules correct? (specifically equation & arithmetic terms)
 - Is our document structure correct (Terminals and Non-terminals section) ?
 - Should we create a rule for comments?
 - Is the letter rule correct?
