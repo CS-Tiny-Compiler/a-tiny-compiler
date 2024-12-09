@@ -126,8 +126,8 @@ Stmts -> ε | Statement Stmts
 
 ### 14. WriteStatement -> write Expression ; | write endl ;
 ```
-WriteStatement -> write writeContent ;
-writeContent -> Expression | endl
+WriteStatement -> write WriteContent ;
+WriteContent -> Expression | endl
 ```
 
 ### 15. Term -> number | identifier | FunctionCall
@@ -136,10 +136,10 @@ writeContent -> Expression | endl
 
 ### 17. ArgList -> Arguments | ε
 
-### 18. Arguments -> Arguments, identifier | identifier
+### 18. Arguments -> Arguments, Term | Term
 ```
-Arguments -> identifier Args
-Args -> ε | , identifier Args
+Arguments -> Term Args
+Args -> ε | , Term Args
 ```
 
 ### 19. Expression -> string | Term | Equation
@@ -199,7 +199,8 @@ ElseIfStmts -> ε | elseif ConditionStatement then Statements ElseIfStmts
 
 ### 33. CommentContent -> CommentContent Character | ε
 ```
-CommentContent -> Character CommentContent | ε
+CommentContent -> Character CommentCont | ε
+CommentCont -> Character CommentCont | ε
 ```
 
 ### 34. Character → Letter | number | Symbol
