@@ -84,15 +84,17 @@
 
 A program in TINY consists of a set of functions (any number of functions (**zero or more**) and ends with a main function), each function is a sequence of statements including (declaration, assignment, write, read, if, repeat, function, comment, etc).
 
+**Important Note**
+
+When you find
+```
+rules that look like this
+```
+This is the one you work with since these are the correct ones after removing left recursion and left factors.
+
 ### 1. Program -> Functions Main
 
-Note: Check difference when switching Functions and FunctionStatement + Check if we need to add `| FunctionStatement` (I don't think we do but they for some reason have it added in the labs in JASON).
-
-### 2. Functions -> Functions FunctionStatement | ε
-```
-Functions -> ε Funcs
-Funcs -> ε | FunctionStatement Funcs
-```
+### 2. Functions -> FunctionStatement Functions | ε
 
 ### 3. FunctionStatement -> FunctionDeclaration FunctionBody
 
@@ -144,28 +146,27 @@ Args -> ε | , Term Args
 
 ### 19. Expression -> string | Term | Equation
 
-Note: Equation is tricky
-
 ### 20. Equation -> Term ArithmeticTerms | ( Equation ) | ( Equation ) ArithmeticTerms
 ```
 Equation -> Term ArithmeticTerms | ( Equation ) EquationTail
 EquationTail -> ε | ArithmeticTerms
 ```
 
-Note: Also here can remove left recursion to be right recursion easily and it would be correct.
+**Note** \
+ArithmeticTermsTail has the below value since after removing the left factor it becomes:\
+ArithmeticTermsTail -> Term ArithmeticTerms | ( Equation ) ArithmeticTerms | ( Equation ) | Term \
+Notice the first 3 parts are exactly `Equation` so it gets transformed to: \
+ArithmeticTermsTail -> Equation | Term
 
-### 21. ArithmeticTerms -> ArithmeticTerms arithmetic_operator Term | ArithmeticTerms arithmetic_operator ( Equation ) | arithmetic_operator Term | arithmetic_operator ( Equation )
+### 21. ArithmeticTerms -> arithmetic_operator Term ArithmeticTerms | arithmetic_operator ( Equation ) ArithmeticTerms | arithmetic_operator Term | arithmetic_operator ( Equation )
 ```
-ArithmeticTerms -> arithmetic_operator ArithFactors ArithTerms
-ArithFactors -> Term | ( Equation )
-ArithTerms -> ε | arithmetic_operator ArithFactors ArithTerms
+ArithmeticTerms -> arithmetic_operator ArithmeticTermsTail
+ArithmeticTermsTail -> Equation | Term
 ```
 
 ### 22. AssignmentStatement -> identifier assignment_operator Expression
 
 ### 23. DeclarationStatement -> DataType Declarations ;
-
-Note: Here also I think we can switch "Declarations, identifier" and "Declarations, AssignmentStatement" to remove left recursion directly, but not sure if we can do that.
 
 ### 24. Declarations -> Declarations, identifier | Declarations, AssignmentStatement | identifier | AssignmentStatement
 ```
@@ -185,11 +186,7 @@ CondStmts -> ε | boolean_operator Condition CondStmts
 
 ### 28. Condition -> identifier condition_operator Term
 
-### 29. ElseIfStatements -> ElseIfStatements elseif ConditionStatement then Statements | ε
-```
-ElseIfStatements -> elseif ConditionStatement then Statements ElseIfStmts | ε
-ElseIfStmts -> ε | elseif ConditionStatement then Statements ElseIfStmts
-```
+### 29. ElseIfStatements -> elseif ConditionStatement then Statements ElseIfStatements | ε
 
 ### 30. ElseStatement -> else Statements | ε
 
