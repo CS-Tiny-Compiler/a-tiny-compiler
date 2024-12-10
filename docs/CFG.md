@@ -54,30 +54,6 @@
 
 ### 26. until
 
-### 27. /
-
-### 28. *
-
-### 29. delimiters
-
-### 30. :
-
-### 31. "
-
-### 32. '
-
-### 33. &
-
-### 34. |
-
-### 35. .
-
-### 36. –
-
-### 37. [a-z]
-
-### 38. [A-Z]
-
 ## Production Rules
 
 **Note:** **Non-terminals** start with a **capital** letter and **terminals** start with a **small** letter.
@@ -122,7 +98,7 @@ Statements -> Statement Stmts
 Stmts -> ε | Statement Stmts
 ```
 
-### 12. Statement -> ReadStatement | WriteStatement | AssignmentStatement ; | DeclarationStatement | IfStatement | RepeatStatement | CommentStatement | FunctionCall ; | ε
+### 12. Statement -> ReadStatement | WriteStatement | AssignmentStatement ; | DeclarationStatement | IfStatement | RepeatStatement | FunctionCall ; | ε
 
 ### 13. ReadStatement -> read identifier ;
 
@@ -192,24 +168,5 @@ CondStmts -> ε | boolean_operator Condition CondStmts
 
 ### 31. RepeatStatement -> repeat Statements until ConditionStatement
 
-### 32. CommentStatement -> / * CommentContent * /
-
-### 33. CommentContent -> CommentContent Character | ε
-```
-CommentContent -> Character CommentCont | ε
-CommentCont -> Character CommentCont | ε
-```
-
-### 34. Character → Letter | number | Symbol
-
-### 35. Letter → [a-z] | [A-Z]
-
-### 36. Symbol → + | - | * | / | ( | ) | { | } | [ | ] | , | ; | : | " | ' | < | > | & | "|" | . | –
-
 ## Questions to ask
-- Is it allowed to apply right recursion directly if it is correct?
-- Is it ok to use something like 'condition_operator' as a terminal? or do we have to create a non-terminal ConditionOperators = > | < | >= | <= ?
 - Are our rules correct? (specifically equation & arithmetic terms)
-- Is our document structure correct (Terminals and Non-terminals section) ?
-- Should we create a rule for comments?
-- Is the letter rule correct?
