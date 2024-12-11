@@ -20,6 +20,7 @@ namespace Tiny_Compiler
 
             Tiny_Scanner.StartScanning(SourceCode);
             //Parser
+
             //Sematic Analysis
         }
 
