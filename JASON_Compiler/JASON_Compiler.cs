@@ -9,9 +9,10 @@ namespace Tiny_Compiler
     public static class Tiny_Compiler
     {
         public static Scanner Tiny_Scanner = new Scanner();
-
         public static List<string> Lexemes = new List<string>();
         public static List<Token> TokenStream = new List<Token>();
+        public static Parser Tiny_Parser = new Parser();
+        public static Node treeroot;
 
 
         public static void Start_Compiling(string SourceCode) //character by character
@@ -20,6 +21,10 @@ namespace Tiny_Compiler
 
             Tiny_Scanner.StartScanning(SourceCode);
             //Parser
+            //Parser
+            Tiny_Parser.StartParsing(TokenStream);
+
+            treeroot = Tiny_Parser.root;
 
             //Sematic Analysis
         }
@@ -38,7 +43,6 @@ namespace Tiny_Compiler
             }
 
         }
-
-
     }
+
 }
