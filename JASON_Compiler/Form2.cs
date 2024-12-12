@@ -28,14 +28,17 @@ namespace Tiny_Compiler
         {
             // clear the form
             dataGridView1.Rows.Clear();
-            dataGridView2.Rows.Clear();
+            listBox1.Clear();
+            treeView1.Nodes.Clear();
            // textBox1.Clear();
             Tiny_Compiler.TokenStream.Clear();
 
             //string Code=textBox1.Text.ToLower();
             string Code = textBox1.Text;
             Tiny_Compiler.Start_Compiling(Code);
+
             PrintTokens();
+            treeView1.Nodes.Add(Parser.PrintParseTree(Tiny_Compiler.treeroot));
             PrintErrors();
 
         }
@@ -49,10 +52,13 @@ namespace Tiny_Compiler
         }
         void PrintErrors()
         {
+            if (Errors.Error_List.Count == 1)
+                MessageBox.Show("sucessERROR");
+            
             for (int i = 0; i < Errors.Error_List.Count; i++)
             {
-                listBox1.Items.Add(Errors.Error_List[i]);
-                //listBox1.Text += "\r\n";
+                listBox1.Text += Errors.Error_List[i];
+                listBox1.Text += "\r\n\n";
             }
         }
 
@@ -61,7 +67,17 @@ namespace Tiny_Compiler
 
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void listBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
