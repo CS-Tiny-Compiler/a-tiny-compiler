@@ -51,8 +51,8 @@ namespace Tiny_Compiler
         {
             for (int i = 0; i < Errors.Error_List.Count; i++)
             {
-                listBox1.Text += Errors.Error_List[i];
-                listBox1.Text += "sd \r\n";
+                listBox1.Items.Add(Errors.Error_List[i]);
+                //listBox1.Text += "\r\n";
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Tiny_Compiler
 {
@@ -21,12 +22,12 @@ namespace Tiny_Compiler
 
             Tiny_Scanner.StartScanning(SourceCode);
             //Parser
-            //Parser
-            Tiny_Parser.StartParsing(TokenStream);
+            treeroot = Tiny_Parser.StartParsing(TokenStream);
 
-            treeroot = Tiny_Parser.root;
+            Parser.PrintParseTree(treeroot);
 
             //Sematic Analysis
+
         }
 
 
