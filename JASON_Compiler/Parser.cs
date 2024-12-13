@@ -49,10 +49,18 @@ namespace Tiny_Compiler
 
             if (isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String))
             {
-                functions.Children.Add(FunctionStatement());
-                Functions();
+                InputPointer++;
+                if (isTokenValid(Token_Class.Identifier))
+                {
+                    InputPointer--;
+                    functions.Children.Add(FunctionStatement());
+                    Functions();
+                }
+                else
+                {
+                    InputPointer--;
+                }
             }
-
             return functions;
         }
 
@@ -295,7 +303,7 @@ namespace Tiny_Compiler
             //FunctionBody -> { Statements ReturnStatement }
             functionBody.Children.Add(match(Token_Class.LCurlyParanthesis));
             functionBody.Children.Add(Statements());
-            functionBody.Children.Add(ReadStatement());
+            functionBody.Children.Add(ReturnStatement());
             functionBody.Children.Add(match(Token_Class.RCurlyParanthesis));
 
             return functionBody;
