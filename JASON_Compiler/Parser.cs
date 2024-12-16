@@ -10,6 +10,10 @@ using System.Windows.Forms;
 
 namespace Tiny_Compiler 
 {
+    public class GlobalVariables
+    {
+        public static bool existMain = false;
+    }
     public class Node
     {
         public List<Node> Children = new List<Node>();
@@ -40,6 +44,7 @@ namespace Tiny_Compiler
             Node program = new Node("Program");
             program.Children.Add(Functions());
             program.Children.Add(Main());
+            GlobalVariables.existMain = true;
 
             return program;
         }
@@ -51,17 +56,16 @@ namespace Tiny_Compiler
 
             if (isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String))
             {
-                InputPointer++;   
-                if (isTokenValid(Token_Class.Identifier)) // why do we make that check?
+                InputPointer++;
+                if(isTokenValid(Token_Class.Main))
                 {
                     InputPointer--;
-                    functions.Children.Add(FunctionStatement());
-                    Functions();
+                    return null;
                 }
-                else
-                {
-                    InputPointer--;
-                }
+
+                InputPointer--;
+                functions.Children.Add(FunctionStatement());
+                Functions();
             }
             return functions;
         }
@@ -111,7 +115,7 @@ namespace Tiny_Compiler
                 +" data type (int float string) and " +
                 TokenStream[InputPointer].token_type.ToString() +
                 "  found\r\n");
-                InputPointer++;
+              //  InputPointer++;
 
             }
 
@@ -229,7 +233,7 @@ namespace Tiny_Compiler
             return writeContent;
         }
 
-        Node Term() //Review
+        Node Term() 
         {
             // Term -> number | identifier | FunctionCall
             Node term = new Node("Term");
@@ -269,7 +273,6 @@ namespace Tiny_Compiler
         Node ArithmeticTerms()
         {
             Node arithmeticTerms = new Node("ArithmeticTerms");
-
             if (isArithmeticOperator())
             {
                 if (TokenStream[InputPointer].token_type == Token_Class.PlusOp)
@@ -530,6 +533,7 @@ namespace Tiny_Compiler
         Node Equation(Node node) ///////
         {
             // Equation -> Term ArithmeticTerms | (Equation) EquationTail
+            //float z1 := 3*2*(2+1)/2-5.3;
 
             if (isTokenValid(Token_Class.Constant) || isTokenValid(Token_Class.Identifier))
             {
@@ -640,9 +644,6 @@ namespace Tiny_Compiler
                 {
                     return null;
                 }
-                //int x; ,\\,   int x=5;   \\,, int x , y;
-                //int x=5,y,z=4;
-                //int x , y := 5;
                 if (TokenStream.Count > InputPointer + 1 && TokenStream[InputPointer + 1].token_type == Token_Class.AssignOp)
                 {
                     Node moreDeclarationsNode = More_Declarations();
@@ -651,10 +652,6 @@ namespace Tiny_Compiler
                     */
                     CurVar.Children.Add(moreDeclarationsNode);
                 }
-                /*else if (TokenStream.Count > InputPointer + 1 && TokenStream[InputPointer + 1].token_type == Token_Class.Comma)
-                {
-
-                }*/
                 else
                 {
                     /* Errors.Error_List.Add("i was in else :"
