@@ -43,6 +43,7 @@ namespace Tiny_Compiler
         Node Program()
         {
             // Program -> Functions Main
+
             Node program = new Node("Program");
             program.Children.Add(Functions());
             program.Children.Add(Main());
@@ -53,7 +54,7 @@ namespace Tiny_Compiler
                 // check if it is a main function
                 if(checkMain())
                 {
-                    Errors.Error_List.Add("Parsing Error: there shouldn't be mutiple mains or anything after main. \r\n");
+                    Errors.Error_List.Add("Parsing Error: there shouldn't be multiple mains or anything after main. \r\n");
                 }
                 else
                 {
@@ -153,15 +154,15 @@ namespace Tiny_Compiler
                if(InputPointer < TokenStream.Count)
                {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                    + " data type (int float string) and " +
+                    + " Data type (int or float or string) and " +
                     TokenStream[InputPointer].token_type.ToString() +
-                    "  found\r\n");
+                    "  found. \r\n");
                     InputPointer++;
                }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                     + " data type (int float string) and nothing is found\r\n");
+                     + " Data type (int or float or string) but nothing was found. \r\n");
                
                 }     
             }
@@ -271,18 +272,16 @@ namespace Tiny_Compiler
                 if(InputPointer < TokenStream.Count)
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                    + " expresssion or endl and " +
+                    + " Expresssion or endl and " +
                     TokenStream[InputPointer].token_type.ToString() +
-                    "  found\r\n");
+                    "  found. \r\n");
                     InputPointer++;
                 }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                    + " expresssion or endl and nothing is found\r\n");
+                    + " Expresssion or endl but nothing was found. \r\n");
                 }
-
-               
 
             }
 
@@ -314,11 +313,20 @@ namespace Tiny_Compiler
             }
             else
             {
-                Errors.Error_List.Add("Parsing Error: Expected "
-                + " expresssion or endl and " +
-                TokenStream[InputPointer].token_type.ToString() +
-                "  found\r\n");
-                InputPointer++;
+                //parse error
+                if (InputPointer < TokenStream.Count)
+                {
+                    Errors.Error_List.Add("Parsing Error: Expected "
+                    + " Term [ number or identifier or functionCall ] " +
+                    TokenStream[InputPointer].token_type.ToString() +
+                    "  found. \r\n");
+                    InputPointer++;
+                }
+                else
+                {
+                    Errors.Error_List.Add("Parsing Error: Expected "
+                    + " Term [ number or identifier or functionCall ] but nothing was found. \r\n");
+                }
             }
 
             return term;
@@ -357,13 +365,13 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected "
                         + "an arithmatic operator [+ - / *] and " +
                         TokenStream[InputPointer].token_type.ToString() +
-                        "  found\r\n");
+                        "  found. \r\n");
                     InputPointer++;
                 }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                        + "an arithmatic operator [+ - / *] and nothing is found \r\n");
+                        + "an arithmatic operator [+ - / *] but nothing was found. \r\n");
                 }
 
             }
@@ -407,15 +415,15 @@ namespace Tiny_Compiler
                 {
 
                     Errors.Error_List.Add("Parsing Error: Expected "
-                     + "an ArithmeticTermsTail [equation or term] and " +
+                     + "an Equation or Term and " +
                         TokenStream[InputPointer].token_type.ToString() +
-                        "  found\r\n");
+                        "  found.\r\n");
                     InputPointer++;
                 }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                     + "an ArithmeticTermsTail [equation or term] and nothing is found \r\n");
+                     + "an Equation or Term but nothing was found. \r\n");
                 }
 
             }
@@ -605,13 +613,13 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected "
                     + "an Expression [string or equation or term] and " +
                     TokenStream[InputPointer].token_type.ToString() +
-                    "  found\r\n");
+                    "  found.\r\n");
                     InputPointer++;
                 }
                else
                {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                    + "an Expression [string or equation or term] and nothing is found\r\n");
+                    + "an Expression [string or equation or term] but nothing was found. \r\n");
                
                }
 
@@ -644,14 +652,14 @@ namespace Tiny_Compiler
                 if (InputPointer < TokenStream.Count)
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                    + "an equation  and " +
+                    + "an Equation and " +
                         TokenStream[InputPointer].token_type.ToString() +
-                        "  found\r\n");
+                        "  found. \r\n");
                     InputPointer++;
                 }
                 else
                 {
-                    Errors.Error_List.Add("Parsing Error: Expected " + "an equation  and nothing is found\r\n");
+                    Errors.Error_List.Add("Parsing Error: Expected an Equation but nothing was found. \r\n");
                 }
 
                  
@@ -754,22 +762,22 @@ namespace Tiny_Compiler
                 if (InputPointer < TokenStream.Count)
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                     + "anDecls [identifier or AssignmentStatement] and " +
+                     + " Declarations [identifier or AssignmentStatement] and " +
                         TokenStream[InputPointer].token_type.ToString() +
-                        "  found\r\n");
+                        "  found. \r\n");
                     InputPointer++;
                 }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                     + "anDecls [identifier or AssignmentStatement] and nothing is found\r\n");
+                     + " Declarations [identifier or AssignmentStatement] but nothing was found. \r\n");
                 }
             }
 
             return node;
         }
 
-        //### Decls -> Îµ | , identifier Decls | , AssignmentStatement Decls
+        // Decls -> ε | , identifier Decls | , AssignmentStatement Decls
         Node Decls(Node _Decls)
         {
             //Node node = new Node("Decls");
@@ -795,15 +803,15 @@ namespace Tiny_Compiler
                     {
 
                         Errors.Error_List.Add("Parsing Error: Expected "
-                         + "anDecls [identifier or AssignmentStatement] and " +
+                         + " Decls [identifier or AssignmentStatement] and " +
                             TokenStream[InputPointer].token_type.ToString() +
-                            "  found\r\n");
+                            "  found. \r\n");
                         InputPointer++;
                     }
                     else
                     {
                         Errors.Error_List.Add("Parsing Error: Expected "
-                         + "anDecls [identifier or AssignmentStatement] and nothing is found\r\n");
+                         + " Decls [identifier or AssignmentStatement] but nothing was found. \r\n");
                     }
                 }
             }
@@ -824,6 +832,8 @@ namespace Tiny_Compiler
 
         Node ReturnStatement()
         {
+            // ReturnStatement -> return Expression ;
+
             Node CurVar = new Node("Return Statement");
 
             if (TokenStream.Count > InputPointer)
@@ -834,10 +844,20 @@ namespace Tiny_Compiler
             }
             else
             {
-                Errors.Error_List.Add("Parsing Error: Expected "
-                  + "Return statement" +
-                  " \r\n");
-                InputPointer++;
+                if (InputPointer < TokenStream.Count)
+                {
+
+                    Errors.Error_List.Add("Parsing Error: Expected "
+                     + " return and  " +
+                        TokenStream[InputPointer].token_type.ToString() +
+                        "  found. \r\n");
+                    InputPointer++;
+                }
+                else
+                {
+                    Errors.Error_List.Add("Parsing Error: Expected return but nothing was found. \r\n");
+                }
+
             }
             return CurVar;
         }
@@ -885,7 +905,9 @@ namespace Tiny_Compiler
         Node Condition()
         {
             Node node = new Node("Condition");
+            
             node.Children.Add(match(Token_Class.Identifier));
+          
             if (isConditionOperator())
             {
                 node.Children.Add(match(TokenStream[InputPointer].token_type));
@@ -895,17 +917,15 @@ namespace Tiny_Compiler
                 if (InputPointer < TokenStream.Count)
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                 + "an condition_operator  and " +
+                 + "a condition_operator  and " +
                     TokenStream[InputPointer].token_type.ToString() +
-                    "  found\r\n");
+                    "  found. \r\n");
                     InputPointer++;
                 }
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
-                 + "an condition_operator  and " +
-                    TokenStream[InputPointer].token_type.ToString() +
-                    "  found\r\n");
+                 + "a condition_operator but nothing was found.\r\n");
                 }
 
             }
