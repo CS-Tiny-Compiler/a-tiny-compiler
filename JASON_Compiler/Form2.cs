@@ -52,9 +52,7 @@ namespace Tiny_Compiler
         }
         void PrintErrors()
         {
-            if (Errors.Error_List.Count == 1)
-                MessageBox.Show("sucessERROR");
-            
+           
             for (int i = 0; i < Errors.Error_List.Count; i++)
             {
                 listBox1.Text += Errors.Error_List[i];
