@@ -10,8 +10,10 @@ using System.Windows.Forms;
 
 namespace Tiny_Compiler 
 {
+    
     public class GlobalVariables
     {
+        //public static int existMain = 0;
         public static bool existMain = false;
     }
     public class Node
@@ -45,8 +47,46 @@ namespace Tiny_Compiler
             program.Children.Add(Functions());
             program.Children.Add(Main());
             GlobalVariables.existMain = true;
+            
+            if(InputPointer < TokenStream.Count)  //extra lexems
+            {
+                // check if it is a main function
+                if(checkMain())
+                {
+                    Errors.Error_List.Add("Parsing Error: there shouldn't be mutiple mains or anything after main. \r\n");
+                }
+                else
+                {
+                   Errors.Error_List.Add("Parsing Error: the code should end with the main function only. \r\n");
+                }  
+                
+            }
 
             return program;
+        }
+        bool checkMain(){
+          // int main(){}
+            //Main -> DataType main ( ) FunctionBody
+            if (isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String))
+            {
+                InputPointer++;
+                if(InputPointer < TokenStream.Count && Token_Class.Main == TokenStream[InputPointer].token_type){
+                    InputPointer++;
+                    if(InputPointer < TokenStream.Count && Token_Class.LRoundParanthesis == TokenStream[InputPointer].token_type ){
+                         InputPointer++;   
+                         if(InputPointer < TokenStream.Count && Token_Class.RRoundParanthesis == TokenStream[InputPointer].token_type){
+                            InputPointer++;
+                            if(InputPointer < TokenStream.Count && Token_Class.LCurlyParanthesis == TokenStream[InputPointer].token_type){
+                               // InputPointer++;
+                                //if(InputPointer < TokenStream.Count && Token_Class.RCurlyParanthesis == TokenStream[InputPointer].token_type){
+                                    return true;
+                                //}
+                            }
+                         }
+                    }
+                }
+            }
+            return false;
         }
         Node Functions()
         {
@@ -115,7 +155,7 @@ namespace Tiny_Compiler
                 +" data type (int float string) and " +
                 TokenStream[InputPointer].token_type.ToString() +
                 "  found\r\n");
-              //  InputPointer++;
+                InputPointer++;
 
             }
 
@@ -390,7 +430,9 @@ namespace Tiny_Compiler
             main.Children.Add(match(Token_Class.LRoundParanthesis)); //can there be arguments?
             main.Children.Add(match(Token_Class.RRoundParanthesis));
             main.Children.Add(FunctionBody());
-
+            
+            
+            
             return main;
         }
         Node FunctionBody()
