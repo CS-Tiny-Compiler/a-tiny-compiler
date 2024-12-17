@@ -356,6 +356,7 @@ namespace Tiny_Compiler
             if (isTokenValid(Token_Class.Constant) || isTokenValid(Token_Class.Identifier))
             {
                 InputPointer++;
+
                 if (isArithmeticOperator())
                 {
                     InputPointer--;
@@ -367,6 +368,11 @@ namespace Tiny_Compiler
                     InputPointer--;
                     arithmeticTermsTail.Children.Add(Term());
                 }
+            }
+            else if(isTokenValid(Token_Class.LRoundParanthesis))
+            {
+                Node n = new Node("Equation");
+                arithmeticTermsTail.Children.Add(Equation(n));
             }
             else
             {
@@ -586,7 +592,7 @@ namespace Tiny_Compiler
             else if (isTokenValid(Token_Class.LRoundParanthesis)) //Equation
             {
                 node.Children.Add(match(Token_Class.LRoundParanthesis));
-                node.Children.Add(Equation(node));
+                Equation(node);
                 node.Children.Add(match(Token_Class.RRoundParanthesis));
                 node.Children.Add(EquationTail());
 
