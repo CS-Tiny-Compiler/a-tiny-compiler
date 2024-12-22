@@ -128,13 +128,7 @@ Equation -> Term ArithmeticTerms | ( Equation ) EquationTail
 EquationTail -> ε | ArithmeticTerms
 ```
 
-**Note** \
-ArithmeticTermsTail has the below value since after removing the left factor it becomes:\
-ArithmeticTermsTail -> Term ArithmeticTerms | ( Equation ) ArithmeticTerms | ( Equation ) | Term \
-Notice the first 3 parts are exactly `Equation` so it gets transformed to: \
-ArithmeticTermsTail -> Equation | Term
-
-### 21. ArithmeticTerms -> arithmetic_operator Term ArithmeticTerms | arithmetic_operator ( Equation ) ArithmeticTerms | arithmetic_operator Term | arithmetic_operator ( Equation )
+### 21. ArithmeticTerms -> arithmetic_operator Equation | arithmetic_operator Term
 ```
 ArithmeticTerms -> arithmetic_operator ArithmeticTermsTail
 ArithmeticTermsTail -> Equation | Term
