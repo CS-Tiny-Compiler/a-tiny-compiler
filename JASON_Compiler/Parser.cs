@@ -750,12 +750,12 @@ namespace Tiny_Compiler
                 {
                     node.Children.Add(AssignmentStatement());
                     node.Children.Add(Decls(node2));
-                }   
-            }
-            else if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
-            {
-                node.Children.Add(match(Token_Class.Identifier));
-                node.Children.Add(Decls(node2));
+                }
+                else
+                {
+                    node.Children.Add(match(Token_Class.Identifier));
+                    node.Children.Add(Decls(node2));
+                }
             }
             else
             {
@@ -788,13 +788,11 @@ namespace Tiny_Compiler
                 if (AssignmentStart())
                 {
                     _Decls.Children.Add(AssignmentStatement());
-                    //_Decls.Children.Add(_Decls);
                     Decls(_Decls);
                 }
                 else if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
                 {
                     _Decls.Children.Add(match(Token_Class.Identifier));
-                    //_Decls.Children.Add(_Decls);
                     Decls(_Decls);
                 }
                 else
