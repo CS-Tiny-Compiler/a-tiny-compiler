@@ -628,7 +628,7 @@ namespace Tiny_Compiler
             return expression;
         }
 
-        Node Equation(Node node) ///////
+        Node Equation(Node node) /////// 
         {
             // Equation -> Term ArithmeticTerms | (Equation) EquationTail
 
@@ -640,8 +640,10 @@ namespace Tiny_Compiler
             }
             else if (isTokenValid(Token_Class.LRoundParanthesis)) //Equation
             {
+
                 node.Children.Add(match(Token_Class.LRoundParanthesis));
-                Equation(node);
+                Node n = new Node("Equation");
+                node.Children.Add(Equation(n));
                 node.Children.Add(match(Token_Class.RRoundParanthesis));
                 node.Children.Add(EquationTail());
 
@@ -660,9 +662,7 @@ namespace Tiny_Compiler
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected an Equation but nothing was found. \r\n");
-                }
-
-                 
+                }   
 
             }
 
