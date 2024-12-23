@@ -45,7 +45,8 @@ namespace Tiny_Compiler
             // Program -> Functions Main
 
             Node program = new Node("Program");
-            program.Children.Add(Functions());
+            Node functions = new Node("Functions");
+            program.Children.Add(Functions(functions));
             program.Children.Add(Main());
             GlobalVariables.existMain = true;
             
@@ -89,9 +90,9 @@ namespace Tiny_Compiler
             }
             return false;
         }
-        Node Functions()
+        Node Functions(Node _Funcs)
         {
-            Node functions = new Node("Functions");
+            //Node functions = new Node("Functions");
 
             // Functions -> FunctionStatement Functions | ε
 
@@ -105,10 +106,11 @@ namespace Tiny_Compiler
                 }
 
                 InputPointer--;
-                functions.Children.Add(FunctionStatement());
-                Functions();
+                _Funcs.Children.Add(FunctionStatement());
+                Functions(_Funcs);
             }
-            return functions;
+
+            return _Funcs;
         }
 
         Node FunctionStatement()
@@ -628,7 +630,7 @@ namespace Tiny_Compiler
             return expression;
         }
 
-        Node Equation(Node node) /////// 
+        Node Equation(Node node) ///////
         {
             // Equation -> Term ArithmeticTerms | (Equation) EquationTail
 
@@ -640,10 +642,8 @@ namespace Tiny_Compiler
             }
             else if (isTokenValid(Token_Class.LRoundParanthesis)) //Equation
             {
-
                 node.Children.Add(match(Token_Class.LRoundParanthesis));
-                Node n = new Node("Equation");
-                node.Children.Add(Equation(n));
+                Equation(node);
                 node.Children.Add(match(Token_Class.RRoundParanthesis));
                 node.Children.Add(EquationTail());
 
@@ -662,7 +662,9 @@ namespace Tiny_Compiler
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected an Equation but nothing was found. \r\n");
-                }   
+                }
+
+                 
 
             }
 
