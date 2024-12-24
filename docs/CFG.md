@@ -141,7 +141,8 @@ ArithmeticTermsTail -> Equation | Term
 ### 24. Declarations -> Declarations, identifier | Declarations, AssignmentStatement | identifier | AssignmentStatement
 ```
 Declarations -> identifier Decls | AssignmentStatement Decls
-Decls -> ε | , identifier Decls | , AssignmentStatement Decls
+Decls -> ε | , DeclsTail Decls
+DeclsTail -> identifier | AssignmentStatement
 ```
 
 ### 25. ReturnStatement -> return Expression ;
