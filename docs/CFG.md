@@ -54,6 +54,10 @@
 
 ### 26. until
 
+### 27. ;
+
+### 28. ,
+
 ## Production Rules
 
 **Note:** **Non-terminals** start with a **capital** letter and **terminals** start with a **small** letter.
