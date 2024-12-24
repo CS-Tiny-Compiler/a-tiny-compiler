@@ -643,7 +643,8 @@ namespace Tiny_Compiler
             else if (isTokenValid(Token_Class.LRoundParanthesis)) //Equation
             {
                 node.Children.Add(match(Token_Class.LRoundParanthesis));
-                Equation(node);
+                Node n = new Node("Equation");
+                node.Children.Add(Equation(n));
                 node.Children.Add(match(Token_Class.RRoundParanthesis));
                 node.Children.Add(EquationTail());
 
