@@ -54,6 +54,10 @@
 
 ### 26. until
 
+### 27. ;
+
+### 28. ,
+
 ## Production Rules
 
 **Note:** **Non-terminals** start with a **capital** letter and **terminals** start with a **small** letter.
@@ -141,7 +145,8 @@ ArithmeticTermsTail -> Equation | Term
 ### 24. Declarations -> Declarations, identifier | Declarations, AssignmentStatement | identifier | AssignmentStatement
 ```
 Declarations -> identifier Decls | AssignmentStatement Decls
-Decls -> ε | , identifier Decls | , AssignmentStatement Decls
+Decls -> ε | , DeclsTail Decls
+DeclsTail -> identifier | AssignmentStatement
 ```
 
 ### 25. ReturnStatement -> return Expression ;
