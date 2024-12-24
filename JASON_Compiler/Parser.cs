@@ -710,7 +710,8 @@ namespace Tiny_Compiler
             
             return assignmentStatement;
         }
-    
+        // int s,22 
+        
         Node DeclarationStatement()
         {
             // DeclarationStatement -> DataType Declarations ;
@@ -730,6 +731,7 @@ namespace Tiny_Compiler
 
             Node declarations = new Node("Declarations");
             Node decls = new Node("Decls");
+            // int ;
 
             if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
             {
@@ -752,7 +754,7 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected Declarations [identifier or AssignmentStatement] and " +
                         TokenStream[InputPointer].token_type.ToString() +
                         "  found. \r\n");
-                    InputPointer++;
+                    //InputPointer++;
                 }
                 else
                 {
@@ -763,44 +765,55 @@ namespace Tiny_Compiler
             return declarations;
         }
 
-       
         Node Decls(Node decls)
         {
-            // Decls -> ε | , identifier Decls | , AssignmentStatement Decls
-
+            // Decls -> ε | , DeclsTail  Decls
+            Node declsTail = new Node("Decls");
             if (isTokenValid(Token_Class.Comma))
             {
                 decls.Children.Add(match(Token_Class.Comma));
+                decls.Children.Add(DeclsTail());
+                decls.Children.Add(Decls(declsTail));
+                
 
-                if (AssignmentStart())
-                {
-                    decls.Children.Add(AssignmentStatement());
-                    Decls(decls);
-                }
-                else if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
-                {
-                    decls.Children.Add(match(Token_Class.Identifier));
-                    Decls(decls);
-                }
-                else
-                {
-                    if (InputPointer < TokenStream.Count)
-                    {
-
-                        Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] and " +
-                            TokenStream[InputPointer].token_type.ToString() +
-                            "  found. \r\n");
-                        InputPointer++;
-                    }
-                    else
-                    {
-                        Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] but nothing was found. \r\n");
-                    }
-                }
             }
 
             return decls;
         }
+        Node DeclsTail()
+        {
+            // DeclsTail -> identifier|AssignmentStatement
+            Node declsTail = new Node("DeclsTail");
+            if (AssignmentStart())
+            {
+                declsTail.Children.Add(AssignmentStatement());
+            }
+            else if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
+            {
+                declsTail.Children.Add(match(Token_Class.Identifier));
+            }
+            else
+            {
+                if (InputPointer < TokenStream.Count)
+                {
+
+                    Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] and " +
+                        TokenStream[InputPointer].token_type.ToString() +
+                        "  found. \r\n");
+                    while (!ShouldIStop())
+                    {
+                        InputPointer++;
+                    }
+                }
+                else
+                {
+                    Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] but nothing was found. \r\n");
+                }
+            }
+
+            return declsTail;
+        }
+
         bool AssignmentStart()
         {
             return TokenStream[InputPointer].token_type == Token_Class.Identifier && FindNext();
@@ -811,6 +824,10 @@ namespace Tiny_Compiler
                 return TokenStream[InputPointer + 1].token_type == Token_Class.AssignOp;
 
             return false;
+        }
+        bool ShouldIStop()
+        {
+            return (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return));
         }
 
         Node ReturnStatement()
