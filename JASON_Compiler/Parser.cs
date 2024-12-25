@@ -198,7 +198,7 @@ namespace Tiny_Compiler
                 statement.Children.Add(ReadStatement());
                 // read  ;
                 // if 
-                while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
+                while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.End) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
                 {
                     InputPointer++;
                 }
@@ -240,6 +240,12 @@ namespace Tiny_Compiler
             else if (isTokenValid(Token_Class.If))
             {
                 statement.Children.Add(IfStatement());
+            }
+
+            //////
+            while (isTokenValid(Token_Class.Semicolon))
+            { 
+                InputPointer++;
             }
 
             return statement;
@@ -292,7 +298,7 @@ namespace Tiny_Compiler
                     TokenStream[InputPointer].token_type.ToString() +
                     "  found. \r\n");
 
-                    while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
+                    while(!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.End) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
                     {
                         InputPointer++;
                     }
@@ -892,6 +898,7 @@ namespace Tiny_Compiler
             Node elseIfStatements = new Node("ElseIfStatements");
             ifStatement.Children.Add(ElseIfStatements(elseIfStatements));
             ifStatement.Children.Add(ElseStatement());
+
             ifStatement.Children.Add(match(Token_Class.End));
 
 
@@ -945,7 +952,7 @@ namespace Tiny_Compiler
                     TokenStream[InputPointer].token_type.ToString() +
                     "  found. \r\n");
 
-                    while (!(isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.End)))
+                    while (!( isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.End) ))
                     {
                         InputPointer++;
                     }
