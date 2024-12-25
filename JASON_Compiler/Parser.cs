@@ -52,8 +52,10 @@ namespace Tiny_Compiler
                 else
                 {
                    Errors.Error_List.Add("Parsing Error: the code should end with the main function only. \r\n");
-                }  
-                
+                   //Errors.Error_List.Add(InputPointer + "\n" + TokenStream.Count);
+
+                }
+
             }
 
             return program;
@@ -194,6 +196,12 @@ namespace Tiny_Compiler
             if (isTokenValid(Token_Class.Read))
             {
                 statement.Children.Add(ReadStatement());
+                // read  ;
+                // if 
+                while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
+                {
+                    InputPointer++;
+                }
             }
             else if (isTokenValid(Token_Class.Write))
             {
@@ -218,6 +226,12 @@ namespace Tiny_Compiler
                 }
 
                 statement.Children.Add(match(Token_Class.Semicolon));
+                //loop 
+                while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Identifier) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Else) || isTokenValid(Token_Class.ElseIf) || isTokenValid(Token_Class.End)))
+                {
+                    InputPointer++;
+                }
+
             }
             else if (isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String))
             {
@@ -235,7 +249,7 @@ namespace Tiny_Compiler
             // ReadStatement -> read identifier ;
 
             Node readStatement = new Node("ReadStatement");
-            
+            //read ;
             readStatement.Children.Add(match(Token_Class.Read));
             readStatement.Children.Add(match(Token_Class.Identifier));
             readStatement.Children.Add(match(Token_Class.Semicolon));
@@ -277,7 +291,11 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected Expresssion or endl and " +
                     TokenStream[InputPointer].token_type.ToString() +
                     "  found. \r\n");
-                    InputPointer++;
+
+                    while (!(isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until) || isTokenValid(Token_Class.Identifier)))
+                    {
+                        InputPointer++;
+                    }
                 }
                 else
                 {
@@ -506,7 +524,7 @@ namespace Tiny_Compiler
         }
         Node Stmts(Node stmts)
         {
-
+            // 1 ;
             //Stmts-> ε | Statement Stmts
 
             if (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Identifier)
@@ -570,15 +588,14 @@ namespace Tiny_Compiler
         }
 
         Node Expression()
-        {
+        {   
+            // x:= x 1;
             // Expression -> string | Term | Equation
             Node expression = new Node("Expression");
-     
             if (isTokenValid(Token_Class.Literal))
             {
                 expression.Children.Add(match(Token_Class.Literal));
             }
-
             else if (isTokenValid(Token_Class.Constant) || isTokenValid(Token_Class.Identifier))
             {
                 InputPointer++;
@@ -607,7 +624,7 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected an Expression [string or equation or term] and " +
                     TokenStream[InputPointer].token_type.ToString() +
                     "  found.\r\n");
-                    InputPointer++;
+                    //InputPointer++;
                 }
                else
                {
@@ -738,6 +755,7 @@ namespace Tiny_Compiler
                 if(InputPointer+1 <TokenStream.Count && TokenStream[InputPointer+1].token_type!=Token_Class.Comma &&
                 TokenStream[InputPointer + 1].token_type != Token_Class.Semicolon)
                 {
+                    //int x:= , t;
                     declarations.Children.Add(AssignmentStatement());
                     declarations.Children.Add(Decls(decls));
                 }
@@ -800,7 +818,7 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] and " +
                         TokenStream[InputPointer].token_type.ToString() +
                         "  found. \r\n");
-                    while (!ShouldIStop())
+                    while(!ShouldIStop())
                     {
                         InputPointer++;
                     }
@@ -827,7 +845,7 @@ namespace Tiny_Compiler
         }
         bool ShouldIStop()
         {
-            return (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return));
+            return (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.Until));
         }
 
         Node ReturnStatement()
@@ -914,7 +932,7 @@ namespace Tiny_Compiler
             Node condition = new Node("Condition");
             
             condition.Children.Add(match(Token_Class.Identifier));
-          
+            
             if (isConditionOperator())
             {
                 condition.Children.Add(match(TokenStream[InputPointer].token_type));
@@ -926,7 +944,11 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected a condition_operator  and " +
                     TokenStream[InputPointer].token_type.ToString() +
                     "  found. \r\n");
-                    InputPointer++;
+
+                    while (!(isTokenValid(Token_Class.Return) || isTokenValid(Token_Class.End)))
+                    {
+                        InputPointer++;
+                    }
                 }
                 else
                 {
@@ -967,7 +989,8 @@ namespace Tiny_Compiler
         }
 
         Node RepeatStatement()
-        {
+        { 
+            //repeat statements until condition
             Node repeatStatement = new Node("RepeatStatement");
 
             repeatStatement.Children.Add(match(Token_Class.Repeat));
@@ -992,14 +1015,13 @@ namespace Tiny_Compiler
                     return newNode;
 
                 }
-
                 else
                 {
                     Errors.Error_List.Add("Parsing Error: Expected "
                         + ExpectedToken.ToString() + " and " +
                         TokenStream[InputPointer].token_type.ToString() +
                         "  found\r\n");
-                    InputPointer++;
+                    //InputPointer++;
                     return null;
                 }
             }
