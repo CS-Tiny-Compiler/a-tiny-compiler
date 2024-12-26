@@ -43,9 +43,9 @@ namespace Tiny_Compiler
             program.Children.Add(Functions(functions));
             program.Children.Add(Main());
             
-            if(InputPointer < TokenStream.Count)  //extra lexems
+            if(InputPointer < TokenStream.Count)  // Extra lexems
             {
-                if(checkMain())
+                if(isCorrectMainStrcuture())
                 {
                     Errors.Error_List.Add("Parsing Error: there shouldn't be multiple mains or anything after main. \r\n");
                 }
@@ -59,40 +59,6 @@ namespace Tiny_Compiler
             return program;
         }
 
-        bool checkMain()
-        {
-            // Main -> DataType main ( ) FunctionBody
-            if (!(isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String)))
-            {
-                return false;
-            }
-
-            InputPointer++;
-            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.Main)
-            {
-                return false;
-            }
-
-            InputPointer++;
-            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.LRoundParanthesis)
-            {
-                return false;
-            }
-
-            InputPointer++;
-            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.RRoundParanthesis)
-            {
-                return false;
-            }
-
-            InputPointer++;
-            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.LCurlyParanthesis)
-            {
-                return false;
-            }
-
-            return true;
-        }
         Node Functions(Node function)
         {
             // Functions -> FunctionStatement Functions | ε
@@ -187,7 +153,7 @@ namespace Tiny_Compiler
         Node Statement() 
         {
             //Statement -> ReadStatement | WriteStatement | AssignmentStatement ;
-            //| DeclarationStatement | IfStatement | RepeatStatement | FunctionCall ; | ε
+            // | DeclarationStatement | IfStatement | RepeatStatement | FunctionCall ; | ε
 
             Node statement = new Node("Statement");
             
@@ -245,7 +211,6 @@ namespace Tiny_Compiler
         Node WriteStatement()
         {
             // WriteStatement -> write WriteContent ;
-            // WriteContent-> Expression | endl
 
             Node writeStatement = new Node("WriteStatement");
            
@@ -259,6 +224,7 @@ namespace Tiny_Compiler
         Node WriteContent()
         {
             // WriteContent-> Expression | endl
+
             Node writeContent = new Node("WriteContent");
 
             if (isTokenValid(Token_Class.Endl))
@@ -292,6 +258,7 @@ namespace Tiny_Compiler
         Node Term() 
         {
             // Term -> number | identifier | FunctionCall
+
             Node term = new Node("Term");
 
             if (isTokenValid(Token_Class.Constant))
@@ -334,7 +301,6 @@ namespace Tiny_Compiler
         Node ArithmeticTerms()
         {
             // ArithmeticTerms -> arithmetic_operator ArithmeticTermsTail
-            // ArithmeticTermsTail -> Equation | Term
 
             Node arithmeticTerms = new Node("ArithmeticTerms");
             if (isArithmeticOperator())
@@ -465,9 +431,10 @@ namespace Tiny_Compiler
 
         Node Main()
         {
+            //Main -> DataType main ( ) FunctionBody
+
             Node main = new Node("Main");
 
-            //Main -> DataType main ( ) FunctionBody
             main.Children.Add(DataType());
             main.Children.Add(match(Token_Class.Main));
             main.Children.Add(match(Token_Class.LRoundParanthesis)); 
@@ -493,11 +460,9 @@ namespace Tiny_Compiler
         Node Statements()
         {
             // Statements -> Statement Stmts
-            // Stmts-> ε | Statement Stmts
 
             Node statements = new Node("Statements");
             Node stmts = new Node("Stmts");
-           
 
             statements.Children.Add(Statement());
             statements.Children.Add(Stmts(stmts));
@@ -523,6 +488,7 @@ namespace Tiny_Compiler
         Node FunctionCall()
         {
             //FunctionCall -> identifier ( ArgList )
+
             Node functionCall = new Node("FunctionCall");
             
             functionCall.Children.Add(match(Token_Class.Identifier));
@@ -536,6 +502,7 @@ namespace Tiny_Compiler
         Node ArgList()
         {
             //ArgList -> Arguments | ε
+
             Node argList = new Node("ArgList");
 
             if (isTokenValid(Token_Class.Constant) || isTokenValid(Token_Class.Identifier))
@@ -549,6 +516,7 @@ namespace Tiny_Compiler
         Node Arguments()
         {
             // Arguments -> Term Args
+
             Node arguments = new Node("Arguments");
             Node args = new Node("Args");
      
@@ -560,6 +528,7 @@ namespace Tiny_Compiler
         Node Args(Node args)
         {
             // Args->ε | , Term Args
+
             if (isTokenValid(Token_Class.Comma))
             {
                 args.Children.Add(match(Token_Class.Comma));
@@ -572,6 +541,7 @@ namespace Tiny_Compiler
         Node Expression()
         {
             // Expression -> string | Term | Equation
+
             Node expression = new Node("Expression");
      
             if (isTokenValid(Token_Class.Literal))
@@ -663,6 +633,7 @@ namespace Tiny_Compiler
         Node EquationTail()
         {
             // EquationTail -> ε | ArithmeticTerms
+
             Node equationTail = new Node("EquationTail");
 
             if (InputPointer < TokenStream.Count && isArithmeticOperator())
@@ -679,25 +650,6 @@ namespace Tiny_Compiler
                 TokenStream[InputPointer].token_type == Token_Class.MultiplyOp ||
                 TokenStream[InputPointer].token_type == Token_Class.DivideOp;
         }
-
-        bool isConditionOperator()
-        {
-            return InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.LessThanOp ||
-                TokenStream[InputPointer].token_type == Token_Class.LessThanOrEqualOp ||
-                TokenStream[InputPointer].token_type == Token_Class.GreaterThanOp ||
-                TokenStream[InputPointer].token_type == Token_Class.GreaterThanOrEqualOp||
-                TokenStream[InputPointer].token_type == Token_Class.EqualOp ||
-                TokenStream[InputPointer].token_type == Token_Class.NotEqualOp||
-                TokenStream[InputPointer].token_type == Token_Class.AndOp ||
-                TokenStream[InputPointer].token_type == Token_Class.OrOp;
-        }
-
-        public bool isTokenValid(Token_Class tokenType)
-        {
-            return (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == tokenType);
-        }
-
-        
         
         Node AssignmentStatement()
         {
@@ -710,7 +662,6 @@ namespace Tiny_Compiler
             
             return assignmentStatement;
         }
-        // int s,22 
         
         Node DeclarationStatement()
         {
@@ -731,7 +682,6 @@ namespace Tiny_Compiler
 
             Node declarations = new Node("Declarations");
             Node decls = new Node("Decls");
-            // int ;
 
             if (TokenStream[InputPointer].token_type == Token_Class.Identifier)
             {
@@ -768,6 +718,7 @@ namespace Tiny_Compiler
         Node Decls(Node decls)
         {
             // Decls -> ε | , DeclsTail  Decls
+
             Node declsTail = new Node("Decls");
             if (isTokenValid(Token_Class.Comma))
             {
@@ -783,8 +734,9 @@ namespace Tiny_Compiler
         Node DeclsTail()
         {
             // DeclsTail -> identifier|AssignmentStatement
+
             Node declsTail = new Node("DeclsTail");
-            if (AssignmentStart())
+            if (isAssignmentStart())
             {
                 declsTail.Children.Add(AssignmentStatement());
             }
@@ -800,7 +752,7 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Parsing Error: Expected Decls [identifier or AssignmentStatement] and " +
                         TokenStream[InputPointer].token_type.ToString() +
                         "  found. \r\n");
-                    while (!ShouldIStop())
+                    while (!stopSkipping())
                     {
                         InputPointer++;
                     }
@@ -812,22 +764,6 @@ namespace Tiny_Compiler
             }
 
             return declsTail;
-        }
-
-        bool AssignmentStart()
-        {
-            return TokenStream[InputPointer].token_type == Token_Class.Identifier && FindNext();
-        }
-        bool FindNext()
-        {
-            if (InputPointer + 1 < TokenStream.Count)
-                return TokenStream[InputPointer + 1].token_type == Token_Class.AssignOp;
-
-            return false;
-        }
-        bool ShouldIStop()
-        {
-            return (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return));
         }
 
         Node ReturnStatement()
@@ -976,6 +912,77 @@ namespace Tiny_Compiler
             repeatStatement.Children.Add(ConditionStatement());
 
             return repeatStatement;
+        }
+
+
+        // Helper functions
+        bool isAssignmentStart()
+        {
+            return TokenStream[InputPointer].token_type == Token_Class.Identifier && isAssignOp();
+        }
+        bool isAssignOp()
+        {
+            if (InputPointer + 1 < TokenStream.Count)
+                return TokenStream[InputPointer + 1].token_type == Token_Class.AssignOp;
+
+            return false;
+        }
+        bool stopSkipping()
+        {
+            return (isTokenValid(Token_Class.Read) || isTokenValid(Token_Class.Write) || isTokenValid(Token_Class.Semicolon) || isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String) || isTokenValid(Token_Class.Repeat) || isTokenValid(Token_Class.If) || isTokenValid(Token_Class.Return));
+        }
+
+        bool isConditionOperator()
+        {
+            return InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == Token_Class.LessThanOp ||
+                TokenStream[InputPointer].token_type == Token_Class.LessThanOrEqualOp ||
+                TokenStream[InputPointer].token_type == Token_Class.GreaterThanOp ||
+                TokenStream[InputPointer].token_type == Token_Class.GreaterThanOrEqualOp ||
+                TokenStream[InputPointer].token_type == Token_Class.EqualOp ||
+                TokenStream[InputPointer].token_type == Token_Class.NotEqualOp ||
+                TokenStream[InputPointer].token_type == Token_Class.AndOp ||
+                TokenStream[InputPointer].token_type == Token_Class.OrOp;
+        }
+
+        public bool isTokenValid(Token_Class tokenType)
+        {
+            return (InputPointer < TokenStream.Count && TokenStream[InputPointer].token_type == tokenType);
+        }
+
+        bool isCorrectMainStrcuture()
+        {
+            // Main -> DataType main ( ) FunctionBody
+
+            if (!(isTokenValid(Token_Class.Int) || isTokenValid(Token_Class.Float) || isTokenValid(Token_Class.String)))
+            {
+                return false;
+            }
+
+            InputPointer++;
+            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.Main)
+            {
+                return false;
+            }
+
+            InputPointer++;
+            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.LRoundParanthesis)
+            {
+                return false;
+            }
+
+            InputPointer++;
+            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.RRoundParanthesis)
+            {
+                return false;
+            }
+
+            InputPointer++;
+            if (InputPointer >= TokenStream.Count || TokenStream[InputPointer].token_type != Token_Class.LCurlyParanthesis)
+            {
+                return false;
+            }
+
+            return true;
         }
 
 
