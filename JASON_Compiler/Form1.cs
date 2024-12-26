@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Tiny_Compiler
 {
@@ -28,7 +29,7 @@ namespace Tiny_Compiler
             string Code = textBox1.Text;
             Tiny_Compiler.Start_Compiling(Code);
             PrintTokens();
-         //   PrintLexemes();
+            //   PrintLexemes();
 
             PrintErrors();
 
@@ -38,13 +39,13 @@ namespace Tiny_Compiler
 
             for (int i = 0; i < Tiny_Compiler.Tiny_Scanner.Tokens.Count; i++)
             {
-               dataGridView1.Rows.Add(Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).lex, Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).token_type);
+                dataGridView1.Rows.Add(Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).lex, Tiny_Compiler.Tiny_Scanner.Tokens.ElementAt(i).token_type);
             }
         }
 
         void PrintErrors()
         {
-            for(int i=0; i<Errors.Error_List.Count; i++)
+            for (int i = 0; i < Errors.Error_List.Count; i++)
             {
                 textBox2.Text += Errors.Error_List[i];
                 textBox2.Text += "\r\n";
@@ -68,6 +69,11 @@ namespace Tiny_Compiler
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }

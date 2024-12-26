@@ -8,6 +8,6 @@ namespace Tiny_Compiler
 {
     public static class Errors
     {
-       public static List<string> Error_List = new List<string>();
+        public static List<string> Error_List = new List<string>();
     }
 }

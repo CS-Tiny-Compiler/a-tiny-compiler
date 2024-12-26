@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using JASON_Compiler;
 
 public enum Token_Class
 {
@@ -73,7 +74,7 @@ namespace Tiny_Compiler
         public void StartScanning(string SourceCode)
         {
             Errors.Error_List.Clear();
-
+            //GlobalVariables.existMain = 0;
 
             for (int i = 0; i < SourceCode.Length; i++)
             {
@@ -94,7 +95,7 @@ namespace Tiny_Compiler
                     FindTokenClass(CurrentLexeme);
                 }
                 // Number + MutliDot error case
-                else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode) || CurrentChar=='.')
+                else if (isDigit(CurrentChar) || isSignedNumber(CurrentChar, i, SourceCode) || CurrentChar == '.')
                 {
 
                     if (isSignedNumber(CurrentChar, i, SourceCode)) // adding sign of number
@@ -207,7 +208,14 @@ namespace Tiny_Compiler
                     Errors.Error_List.Add("Unrecognized token: " + CurrentLexeme);
                 }
             }
-
+            // if(GlobalVariables.existMain > 1)
+            // {
+            //     Errors.Error_List.Add("More Than one Main found ");
+            // }
+            // else if (GlobalVariables.existMain == 0)
+            // {
+            //     Errors.Error_List.Add("No Main found ");
+            // }
             Tiny_Compiler.TokenStream = Tokens;
         }
 
@@ -228,6 +236,7 @@ namespace Tiny_Compiler
             else if (isKeyWord(Lex))
             {
                 Tok.token_type = ReservedWords[Lex];
+                
                 Tokens.Add(Tok);
             }
             else if (isConstant(Lex))
@@ -312,9 +321,13 @@ namespace Tiny_Compiler
 
             if (ReservedWords.ContainsKey(lex))
             {
+                // if (lex == "main")
+                // {
+                //     GlobalVariables.existMain++;
+                // }
                 isValid = true;
             }
-
+            
             return isValid;
         }
         bool isString(string lex)
@@ -353,6 +366,5 @@ namespace Tiny_Compiler
 
             return isValid;
         }
-
-    }
+   }
 }
