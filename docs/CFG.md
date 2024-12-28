@@ -67,9 +67,11 @@ A program in TINY consists of a set of functions (any number of functions (**zer
 **Important Note**
 
 When you find
+
 ```
 rules that look like this
 ```
+
 This is the one you work with since these are the correct ones after removing left recursion and left factors.
 
 ### 1. Program -> Functions Main
@@ -85,6 +87,7 @@ This is the one you work with since these are the correct ones after removing le
 ### 6. ParametersList -> Parameters | ε
 
 ### 7. Parameters -> Parameters, Parameter | Parameter
+
 ```
 Parameters -> Parameter Params
 Params -> ε | , Parameter Params
@@ -97,6 +100,7 @@ Params -> ε | , Parameter Params
 ### 10. FunctionBody -> { Statements ReturnStatement }
 
 ### 11. Statements -> Statements Statement | Statement
+
 ```
 Statements -> Statement Stmts
 Stmts -> ε | Statement Stmts
@@ -107,6 +111,7 @@ Stmts -> ε | Statement Stmts
 ### 13. ReadStatement -> read identifier ;
 
 ### 14. WriteStatement -> write Expression ; | write endl ;
+
 ```
 WriteStatement -> write WriteContent ;
 WriteContent -> Expression | endl
@@ -119,6 +124,7 @@ WriteContent -> Expression | endl
 ### 17. ArgList -> Arguments | ε
 
 ### 18. Arguments -> Arguments, Term | Term
+
 ```
 Arguments -> Term Args
 Args -> ε | , Term Args
@@ -127,12 +133,14 @@ Args -> ε | , Term Args
 ### 19. Expression -> string | Term | Equation
 
 ### 20. Equation -> Term ArithmeticTerms | ( Equation ) | ( Equation ) ArithmeticTerms
+
 ```
 Equation -> Term ArithmeticTerms | ( Equation ) EquationTail
 EquationTail -> ε | ArithmeticTerms
 ```
 
 ### 21. ArithmeticTerms -> arithmetic_operator Equation | arithmetic_operator Term
+
 ```
 ArithmeticTerms -> arithmetic_operator ArithmeticTermsTail
 ArithmeticTermsTail -> Equation | Term
@@ -143,6 +151,7 @@ ArithmeticTermsTail -> Equation | Term
 ### 23. DeclarationStatement -> DataType Declarations ;
 
 ### 24. Declarations -> Declarations, identifier | Declarations, AssignmentStatement | identifier | AssignmentStatement
+
 ```
 Declarations -> identifier Decls | AssignmentStatement Decls
 Decls -> ε | , DeclsTail Decls
@@ -154,6 +163,7 @@ DeclsTail -> identifier | AssignmentStatement
 ### 26. IfStatement -> if ConditionStatement then Statements ElseIfStatements ElseStatement end
 
 ### 27. ConditionStatement -> ConditionStatement boolean_operator Condition | Condition
+
 ```
 ConditionStatement -> Condition CondStmts
 CondStmts -> ε | boolean_operator Condition CondStmts
@@ -166,6 +176,3 @@ CondStmts -> ε | boolean_operator Condition CondStmts
 ### 30. ElseStatement -> else Statements | ε
 
 ### 31. RepeatStatement -> repeat Statements until ConditionStatement
-
-## Questions to ask
-- Are our rules correct? (specifically equation & arithmetic terms)
