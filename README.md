@@ -1,7 +1,16 @@
 # Tiny-Compiler
-A simple compiler for a tiny language, written using C#.
+A simple compiler for the tiny language (C-like), implemented using C# and Windows Forms.
 
 - [Tiny Language Description](https://docs.google.com/document/d/1WbSTlhhWeW67SFEdHkaQGiKx4_WBjdlX/edit?rtpof=true&tab=t.0)
+- [Tiny Language Context Free Grammar Document](docs/CFG.md)
+- [Deterministic Finite Automaton (DFA) for Tiny Language](docs/DFA.md)
+
+#### Description
+The implementation of the compiler is divided into two main phases:
+
+- **Scanner Phase (Lexical Analysis)**: Recognizes basic language units (tokens) such as identifiers, literals, operators, and keywords, extracting their attributes and storing them in a symbol table.
+
+- **Parser Phase (Syntax Analysis)**: Builds a syntax tree from tokens and validates their arrangement against the source code grammar to ensure syntactic correctness
 
 
 ### Testing
