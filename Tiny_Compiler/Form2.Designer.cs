@@ -99,7 +99,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(154, 26);
             this.label1.TabIndex = 6;
-            this.label1.Text = "JASON Code";
+            this.label1.Text = "Tiny Code";
             // 
             // label2
             // 
