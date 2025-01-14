@@ -5,6 +5,8 @@ A simple compiler for the tiny language (C-like), implemented using C# and Windo
 - [Tiny Language Context Free Grammar Document](docs/CFG.md)
 - [Deterministic Finite Automaton (DFA) for Tiny Language](docs/DFA.md)
 
+[[docs/final_image.jpg]]
+
 #### Description
 The implementation of the compiler is divided into two main phases:
 
